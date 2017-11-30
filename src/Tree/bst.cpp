@@ -227,7 +227,7 @@ inline T& BST<T>::operator[](T key)
 	TreeNode<T>* tmp = Find (key, root);
 
 	if (tmp == nullptr)
-		throw valuenotfound_exception;
+		throw keynotfound_exception;
 
 	return tmp->key;
 }
