@@ -1,9 +1,8 @@
 #ifndef __TREE__
 #define __TREE__
-
 #include <vector>
 #include <functional>
-#include "nodes.h"
+#include "Nodes.h"
 
 /*Copy does not work*/
 
@@ -14,24 +13,24 @@ class BST
 {
 protected:
 
-	Node<T>* root;
+	TreeNode<T>* root;
 	compare_f<T> comparator;
 	
 	void CreateRoot (T);
 
-	static void Copy (Node<T>*, Node<T>*);
+	static void Copy (TreeNode<T>*, TreeNode<T>*);
 	void Copy (const BST&);
 
-	void Insert (T, Node<T>*);
-	void Dispose (Node<T>*);
-	string toString (Node<T>*);
-	uint Size (Node<T>*);
-	int getDepth (Node<T>*);
-	int getLeafNum (Node<T>*);
+	void Insert (T, TreeNode<T>*);
+	void Dispose (TreeNode<T>*);
+	string toString (TreeNode<T>*);
+	uint Size (TreeNode<T>*);
+	int getDepth (TreeNode<T>*);
+	int getLeafNum (TreeNode<T>*);
 
-	static bool Leaf (Node<T>*);
+	static bool Leaf (TreeNode<T>*);
 
-	Node<T>* Find (T, Node<T>*);
+	TreeNode<T>* Find (T, TreeNode<T>*);
 
 public:
 

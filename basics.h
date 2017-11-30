@@ -16,14 +16,16 @@ STD;
 #define elif                    else if
 #define catch_exception(ex)		catch (const std::exception& ex)
 #define emptylist_exception		out_of_range ("List is empty!")
+#define keynotfound_exception	exception("Key was not found")
 #define outofrange_exception	out_of_range ("Index is out of range!")
 #define unexcepted_exception	exception ("An unexcepted exception has occurred!")
 #define local					(*this)
 
-#define ushort					unsigned short
-#define uint					unsigned int
-#define ulong					unsigned long
-#define ulonglong				unsigned long long
+typedef unsigned short			ushort;
+typedef unsigned int			uint;
+typedef unsigned long			ulong;
+typedef unsigned long long		ullong;
+
 
 #define MAX_SIZE(t)				(pow (2, 8 * sizeof (t)) - 1)
 #define MIN_SIZE(t)				(-pow (2, 8 * sizeof (t)) + 1)

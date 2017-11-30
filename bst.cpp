@@ -37,49 +37,50 @@ BST<T>::~BST ()
 }
 
 template<class T>
-void BST<T>::Copy (Node<T>* from, Node<T>* to)
+void BST<T>::Copy (TreeNode<T>* from, TreeNode<T>* to)
 {
-	to = new Node<T> (from->elem, from->previous, from->next);
+	to = new TreeNode<T> (from->key, from->left, from->right);
 
-	if (from->previous != nullptr)
-		Copy (from->previous, to->previous);
+	if (from->left != nullptr)
+		Copy (from->left, to->left);
 
-	if (from->next != nullptr)
-		Copy (from->next, to->next);
+	if (from->right != nullptr)
+		Copy (from->right, to->right);
 }
 
 template<class T>
 inline void BST<T>::Copy (const BST& tree)
 {
 	Clear ();
+	setComparator(tree.comparator);
 	Copy (tree.root, root);
 }
 
 template<class T>
 inline void BST<T>::CreateRoot (T key)
 {
-	root = new Node<T> (key);
+	root = new TreeNode<T> (key);
 }
 
 template<class T>
-void BST<T>::Insert (T key, Node<T>* n)
+void BST<T>::Insert (T key, TreeNode<T>* n)
 {
-	if (comparator (key, n->elem))
+	if (comparator (key, n->key))
 	{
-		if (n->previous == nullptr)
-			n->previous = new Node<T> (key);
+		if (n->left == nullptr)
+			n->left = new TreeNode<T> (key);
 
 		else
-			Insert (key, n->previous);
+			Insert (key, n->left);
 	}
 
 	else
 	{
-		if (n->next == nullptr)
-			n->next = new Node<T> (key);
+		if (n->right == nullptr)
+			n->right = new TreeNode<T> (key);
 
 		else
-			Insert (key, n->next);
+			Insert (key, n->right);
 	}
 }
 
@@ -93,12 +94,12 @@ inline void BST<T>::Insert (T key)
 }
 
 template<class T>
-void BST<T>::Dispose (Node<T>* n)
+void BST<T>::Dispose (TreeNode<T>* n)
 {
 	if (!Leaf(n))
 	{
-		Dispose (n->previous); 
-		Dispose (n->next);
+		Dispose (n->left); 
+		Dispose (n->right);
 	}
 
 	delete n;
@@ -115,12 +116,12 @@ inline void BST<T>::Clear ()
 }
 
 template<class T>
-string BST<T>::toString (Node<T>* n)
+string BST<T>::toString (TreeNode<T>* n)
 {
 	if (n == nullptr)
 		return string ();
 
-	return (toString (n->previous) + to_string(n->elem) + toString (n->next));
+	return (toString (n->left) + to_string(n->key) + toString (n->right));
 }
 
 template<class T>
@@ -136,10 +137,10 @@ inline bool BST<T>::Empty ()
 }
 
 template<class T>
-inline bool BST<T>::Leaf (Node<T>* n)
+inline bool BST<T>::Leaf (TreeNode<T>* n)
 {		// no check if empty
 
-	return n->next == nullptr && n->previous == nullptr;
+	return n->right == nullptr && n->left == nullptr;
 }
 
 template<class T>
@@ -161,12 +162,12 @@ inline void BST<T>::setComparator (compare_f<T> fcomparator)
 }
 
 template<class T>
-uint BST<T>::Size (Node<T>* n)
+uint BST<T>::Size (TreeNode<T>* n)
 {
 	if (n == nullptr)
 		return 0;
 
-	return 1 + Size (n->previous) + Size (n->next);
+	return 1 + Size (n->left) + Size (n->right);
 }
 
 template<class T>
@@ -176,12 +177,12 @@ inline uint BST<T>::Size ()
 }
 
 template<class T>
-int BST<T>::getDepth (Node<T>* n)
+int BST<T>::getDepth (TreeNode<T>* n)
 {
 	if (n == nullptr)
 		return -1;
 
-	return max (getDepth (n->previous) + 1, getDepth (n->next) + 1);
+	return max (getDepth (n->left) + 1, getDepth (n->right) + 1);
 }
 
 template<class T>
@@ -191,7 +192,7 @@ inline int BST<T>::getDepth ()
 }
 
 template<class T>
-int BST<T>::getLeafNum (Node<T>* n)
+int BST<T>::getLeafNum (TreeNode<T>* n)
 {
 	if (n == nullptr)
 		return 0;
@@ -199,7 +200,7 @@ int BST<T>::getLeafNum (Node<T>* n)
 	if (Leaf (n))
 		return 1;
 
-	return getLeafNum (n->previous) + getLeafNum (n->next);
+	return getLeafNum (n->left) + getLeafNum (n->right);
 }
 
 template<class T>
@@ -209,26 +210,26 @@ inline int BST<T>::getLeafNum ()
 }
 
 template<class T>
-Node<T>* BST<T>::Find (T key, Node<T>* n)
+TreeNode<T>* BST<T>::Find (T key, TreeNode<T>* n)
 {
-	if (n == nullptr || n->elem == key)
+	if (n == nullptr || n->key == key)
 		return n;
 
-	if (comparator (key, n->elem))
-		return Find (key, n->previous);
+	if (comparator (key, n->key))
+		return Find (key, n->left);
 
-	return Find (key, n->next);
+	return Find (key, n->right);
 }
 
 template<class T>
 inline T& BST<T>::operator[](T key)
 {
-	Node<T>* tmp = Find (key, root);
+	TreeNode<T>* tmp = Find (key, root);
 
 	if (tmp == nullptr)
 		throw valuenotfound_exception;
 
-	return tmp->elem;
+	return tmp->key;
 }
 
 template<class T>
