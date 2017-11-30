@@ -2,8 +2,8 @@
 #include "../Utils/basics.h"
 
 struct GameData {
-	ushort weight;
-	string data;
+	ushort weight; 	//used to create treemap
+	string data;	//actual data
 
 	GameData(string);
 	bool operator>(GameData right);
