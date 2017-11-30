@@ -10,6 +10,7 @@ struct GameData {
 };
 
 GameData::GameData(string _data) : weight(0), data(_data) {}
+
 inline bool GameData::operator>(GameData right){
 	return weight>right.weight;
 }
