@@ -7,24 +7,24 @@
 #include <string>
 #include <stdexcept>
 
-#define STD						using namespace std
+#define STD			using namespace std
 STD;
 
-#define null					""
-#define in						:
+#define nullstr			""
+#define in			:
 #define extends                 :
 #define elif                    else if
-#define catch_exception(ex)		catch (const std::exception& ex)
-#define emptylist_exception		out_of_range ("List is empty!")
+#define catch_exception(ex)	catch (const std::exception& ex)
+#define emptylist_exception	out_of_range ("List is empty!")
 #define keynotfound_exception	exception("Key was not found")
 #define outofrange_exception	out_of_range ("Index is out of range!")
 #define unexcepted_exception	exception ("An unexcepted exception has occurred!")
-#define local					(*this)
+#define local			(*this)
 
-typedef unsigned short			ushort;
-typedef unsigned int			uint;
-typedef unsigned long			ulong;
-typedef unsigned long long		ullong;
+typedef unsigned short		ushort;
+typedef unsigned int		uint;
+typedef unsigned long		ulong;
+typedef unsigned long long	ullong;
 
 
 #define MAX_SIZE(t)				(pow (2, 8 * sizeof (t)) - 1)
