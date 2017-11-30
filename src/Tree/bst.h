@@ -4,7 +4,7 @@
 #include <functional>
 #include "../Node/Nodes.h"
 
-/*Copy does not work*/
+/*Copy does not work : see Issues*/
 
 GENERIC_TEMP using compare_f = function<bool (T, T)>;
 
