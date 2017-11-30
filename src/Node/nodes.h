@@ -113,4 +113,5 @@ inline bool TreeNode<T>::isParent() {
 
 #pragma endregion
 
+
 #endif // !__NODES__
