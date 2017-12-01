@@ -2,9 +2,7 @@
 #define __TREE__
 #include <vector>
 #include <functional>
-#include "../Node/Nodes.h"
-
-/*Copy does not work : see Issues*/
+#include "nodes.h"
 
 GENERIC_TEMP using compare_f = function<bool (T, T)>;
 
@@ -18,7 +16,7 @@ protected:
 	
 	void CreateRoot (T);
 
-	static void Copy (TreeNode<T>*, TreeNode<T>*);
+	static void Copy (TreeNode<T>*, TreeNode<T>*&);
 	void Copy (const BST&);
 
 	void Insert (T, TreeNode<T>*);
@@ -28,14 +26,12 @@ protected:
 	int getDepth (TreeNode<T>*);
 	int getLeafNum (TreeNode<T>*);
 
-	static bool Leaf (TreeNode<T>*);
-
 	TreeNode<T>* Find (T, TreeNode<T>*);
 
 public:
 
 	BST (compare_f<T> = less<T> ());
-	BST (initializer_list<T>, compare_f<T> = less<T> ());
+	BST (initializer_list<T>, compare_f<T> = less<T>());
 	BST (const BST&);
 	BST (BST&&);
 	~BST ();
@@ -48,7 +44,7 @@ public:
 
 	void Clear ();
 
-	void setComparator (compare_f<T> = less<T> ());
+	void setComparator (const compare_f<T>&);
 	compare_f<T> getComparator ();
 
 	uint Size ();

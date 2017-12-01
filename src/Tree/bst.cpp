@@ -1,6 +1,30 @@
 #ifndef _TREE_BODY__
 #define _TREE_BODY__
 
+/*
+Remove: 
+for each Node:
+	/// BEGIN RECURSION
+	if (me->key > _to_delete && !me->isLeaf()) then /// GO LEFT
+		• Node* tmp = thisfoo(me->left)
+		• if (tmp != nullptr)
+			• del me->left
+			• me->left = tmp->left
+	else if (me->key <= to_delete && !me->isLeaf()) then
+		• Node* tmp = thisfoo(me->right)
+		• if (tmp != nullptr)
+			• del me->right
+			• me->right = tmp->right
+	else /// THIS IS TO DELETE
+	/// NEED TO UNIFY LEFT AND RIGHT FOR PARENT
+		• if (left == nullptr) then
+		• else
+			• RECURSION: me->left.setToLeafestRight(me->right) as right
+		• ret &me
+	ret nullptr	/// WILL BE DISCARDED
+*/
+
+
 #include "bst.h"
 
 template<class T>
@@ -12,7 +36,7 @@ BST<T>::BST (compare_f<T> fcomparator)
 template<class T>
 BST<T>::BST (initializer_list<T> init, compare_f<T> fcomparator)
 {
-	comparator = fcomparator;
+	setComparator (fcomparator);
 
 	for (T e in init)
 		Insert (e);
@@ -21,6 +45,7 @@ BST<T>::BST (initializer_list<T> init, compare_f<T> fcomparator)
 template<class T>
 BST<T>::BST (const BST& tree)
 {
+	root = nullptr;
 	Copy (tree);
 }
 
@@ -34,10 +59,11 @@ BST<T>::BST (BST&& tree)
 template<class T>
 BST<T>::~BST ()
 {
+	Clear ();
 }
 
 template<class T>
-void BST<T>::Copy (TreeNode<T>* from, TreeNode<T>* to)
+void BST<T>::Copy (TreeNode<T>* from, TreeNode<T>*& to)
 {
 	to = new TreeNode<T> (from->key, from->left, from->right);
 
@@ -52,7 +78,7 @@ template<class T>
 inline void BST<T>::Copy (const BST& tree)
 {
 	Clear ();
-	setComparator(tree.comparator);
+	setComparator (tree.comparator);
 	Copy (tree.root, root);
 }
 
@@ -96,13 +122,12 @@ inline void BST<T>::Insert (T key)
 template<class T>
 void BST<T>::Dispose (TreeNode<T>* n)
 {
-	if (!Leaf(n))
+	if (n != nullptr)
 	{
-		Dispose (n->left); 
+		Dispose (n->left);
 		Dispose (n->right);
+		delete n;
 	}
-
-	delete n;
 }
 
 template<class T>
@@ -112,16 +137,15 @@ inline void BST<T>::Clear ()
 		Dispose (root);
 
 	root = nullptr;
-	comparator = less<T> ();
 }
 
 template<class T>
 string BST<T>::toString (TreeNode<T>* n)
 {
 	if (n == nullptr)
-		return string ();
+		return null;
 
-	return (toString (n->left) + to_string(n->key) + toString (n->right));
+	return (toString (n->left) + to_string (n->key) + '\t' + toString (n->right));
 }
 
 template<class T>
@@ -137,16 +161,9 @@ inline bool BST<T>::Empty ()
 }
 
 template<class T>
-inline bool BST<T>::Leaf (TreeNode<T>* n)
-{		// no check if empty
-
-	return n->right == nullptr && n->left == nullptr;
-}
-
-template<class T>
 inline bool BST<T>::Leaf ()
 {
-	return !Empty() && Leaf(root);
+	return !Empty () && root->isLeaf ();
 }
 
 template<class T>
@@ -156,7 +173,7 @@ inline compare_f<T> BST<T>::getComparator ()
 }
 
 template<class T>
-inline void BST<T>::setComparator (compare_f<T> fcomparator)
+inline void BST<T>::setComparator (const compare_f<T>& fcomparator)
 {
 	comparator = fcomparator;
 }
