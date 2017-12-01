@@ -2,7 +2,7 @@
 #define __TREE__
 #include <vector>
 #include <functional>
-#include "nodes.h"
+#include "..\Node\nodes.h"
 
 GENERIC_TEMP using compare_f = function<bool (T, T)>;
 
