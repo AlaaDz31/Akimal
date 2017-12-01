@@ -7,45 +7,44 @@
 #include <string>
 #include <stdexcept>
 
-#define STD			using namespace std
+#define STD						using namespace std
 STD;
 
-#define nullstr			""
-#define in			:
+#define null					""
+#define in						:
 #define extends                 :
 #define elif                    else if
-#define catch_exception(ex)	catch (const std::exception& ex)
-#define emptylist_exception	out_of_range ("List is empty!")
+#define catch_exception(ex)		catch (const exception& ex)
+#define emptylist_exception		out_of_range ("List is empty!")
 #define keynotfound_exception	exception("Key was not found")
 #define outofrange_exception	out_of_range ("Index is out of range!")
 #define unexcepted_exception	exception ("An unexcepted exception has occurred!")
-#define local			(*this)
-
-typedef unsigned short		ushort;
-typedef unsigned int		uint;
-typedef unsigned long		ulong;
-typedef unsigned long long	ullong;
-
+#define local					(*this)
 
 #define MAX_SIZE(t)				(pow (2, 8 * sizeof (t)) - 1)
 #define MIN_SIZE(t)				(-pow (2, 8 * sizeof (t)) + 1)
 #define TEMP(t)					template<class t>
 #define GENERIC_TEMP			TEMP(T)
-#define CLS						std::system("cls")
-#define PAUSE					std::system("pause")
-#define PAUSEN					std::system("pause>nul")
+#define CLS						system("cls")
+#define PAUSE					system("pause")
+#define PAUSEN					system("pause>nul")
 #define END_MAIN				PAUSEN; return 0
 #define FLUSH_IN				fflush(stdin)
 #define FLUSH_OUT				fflush(stdout)
-#define ENDL					std::cout << std::endl
-#define endll					std::endl << std::endl
-#define ENDLL					std::cout << endll
-#define SET_TIME				std::srand(time(NULL))
+#define ENDL					cout << endl
+#define endll					endl << endl
+#define ENDLL					cout << endll
+#define SET_TIME				srand(time(NULL))
 #define typeof(v)				typeid(v).name()
 
 // gets and returns a simple variable in input with check
-#define insertCheck (minV, maxV, s, e, v)	std::cout << s; while (std::cin >> v && v < minV || v > maxV) std::cout << e << std::endl << "Retry: "
+#define insertCheck (minV, maxV, s, e, v)	cout << s; while (cin >> v && v < minV || v > maxV) cout << e << endl << "Retry: "
 
+typedef unsigned short			ushort;
+typedef unsigned int			uint;
+typedef unsigned long			ulong;
+typedef unsigned long long		ullong;
+typedef unsigned char			uchar;
 
 // returns the mcm between 2 numbers
 GENERIC_TEMP T mcm (T x, T y)
