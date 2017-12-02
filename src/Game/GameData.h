@@ -1,16 +1,29 @@
 #pragma once
-#include "../Utils/basics.h"
+#include "..\..\lib\basics.h"
 
-struct GameData {
-	ushort weight; 	//used to create treemap
-	string data;	//actual data
+struct GameData
+{
+	ushort weight; 	// used to create treemap
+	string data;	// actual data
 
-	GameData(string);
-	bool operator>(GameData right);
+	GameData (string, int = 0);
+
+	string toString ();
+
+	bool operator>(const GameData&);
 };
 
-GameData::GameData(string _data) : weight(0), data(_data) {}
+inline GameData::GameData (string _data, int weight)
+	: weight (0), data (_data)
+{
+}
 
-inline bool GameData::operator>(GameData right){
-	return weight>right.weight;
+inline string GameData::toString ()
+{
+	return weight + "|" + data;
+}
+
+inline bool GameData::operator>(const GameData& right)
+{
+	return weight > right.weight;
 }
