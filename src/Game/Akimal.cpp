@@ -1,80 +1,95 @@
 #include "Akimal.h"
 
+inline Akimal::Akimal (const string& _path)
+{
+	comparator = less<> ();
+	path = _path;
+	load (_path);
+	size = Size ();
+}
+
 void Akimal::assignWeight (DataNode* n)
 {
 	if (n != nullptr)
 	{
 		assignWeight (n->left);
-		n->key.data = size++;
+		n->key.weight = size++;
 		assignWeight (n->right);
 	}
 }
 
-void Akimal::saver (ofstream& o, DataNode* n)
+void Akimal::save (ofstream& o, DataNode* n)
 {
-	if (n != nullptr && o.good ())
+	if (o.good ())
 	{
-		o << n->key.toString ();
-		saver (o, n->left);
-		saver (o, n->right);
+		if (n != nullptr)
+		{
+			o << n->key.toString ();
+			save (o, n->left);
+			save (o, n->right);
+		}
 	}
 
-	else Clear ();		// there was an error
-}
+	else
+	{		// generic error
 
-void Akimal::loader (ifstream& i, DataNode*& n)
-{
-	string line;
-	int divPos, tmp;
-
-	while (i.good () && getline (i, line))
-	{
-		divPos = line.find ('|');
-		// check format
-	}
-
-	if (!i.eof ())		// there was an error
+		clog << "An error occurred while trying to save data." << endl;
 		Clear ();
-}
-
-Akimal::Akimal (string _path)
-{
-	path = _path;
-	load ();
-	size = Size ();
+	}
 }
 
 inline void Akimal::save ()
 {
+	save (path);
+}
+
+inline void Akimal::save (const string& _path)
+{
 	size = 0;
 	assignWeight (root);
 
-	ofstream o (path);
-	saver (o, root);
+	ofstream o (_path);
+	save (o, root);
 	o.close ();
 }
 
-inline void Akimal::load ()
+void Akimal::load (const string& _path)
 {
 	Clear ();
 
-	ifstream i (path);
-	loader (i, root);
+	path = _path;
+	ifstream i (_path);	// file input stream
+	string line;		// stores input lines
+	int lineCnt = -1;	// line counter, needed to report format errors
+	GameData data;		// temporary stores data from lines
+
+	// if at the beginning is eof, it is empty
+	if (i.eof ())
+		clog << "File \"" << path << "\" is empty." << endl;
+
+	// insert each line, if the format is good
+	while (i.good () && getline (i, line) && ++lineCnt && GameData () != (data = GameData::checkFormat (line)))
+		Insert (data);
+
+	// end of file has not been reached
+	if (!i.eof ())
+	{
+		// there is a line with an incorrect format
+		if (data == GameData ())
+			clog << "Error at line " << lineCnt << " in file \"" << path << "\": format is not correct." << endl;
+
+		clog << "An error occurred while trying to load data." << endl;
+	}
+
 	i.close ();
 }
 
-inline void Akimal::setFile (string _path)
-{
-	Clear ();
-	local = Akimal (_path);
-}
-
-inline uint Akimal::AnswerNum ()
+inline ushort Akimal::AnswerNum ()
 {
 	return getLeafNum ();
 }
 
-inline uint Akimal::QuestionNum ()
+inline ushort Akimal::QuestionNum ()
 {
 	return size - AnswerNum ();
 }
