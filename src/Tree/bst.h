@@ -2,7 +2,7 @@
 #define __TREE__
 #include <vector>
 #include <functional>
-#include "..\Node\nodes.h"
+#include "nodes.h"
 
 GENERIC_TEMP using compare_f = function<bool (T, T)>;
 
@@ -10,52 +10,56 @@ template<class T>
 class BST
 {
 protected:
+	using type_cref = const T&;
+	using init_cref = const initializer_list<T>&;
+	using func_cref = const compare_f<T>&;
 
 	TreeNode<T>* root;
-	compare_f<T> comparator;
+	compare_f<type_cref> comparator;
 	
-	void CreateRoot (T);
+	void CreateRoot (type_cref);
 
-	static void Copy (TreeNode<T>*, TreeNode<T>*&);
 	void Copy (const BST&);
 
-	void Insert (T, TreeNode<T>*);
+	// recursive methods:
+	void Insert (type_cref, TreeNode<T>*);
 	void Dispose (TreeNode<T>*);
 	string toString (TreeNode<T>*);
 	uint Size (TreeNode<T>*);
 	int getDepth (TreeNode<T>*);
-	int getLeafNum (TreeNode<T>*);
+	uint getLeafNum (TreeNode<T>*);
+	static void Copy (TreeNode<T>*, TreeNode<T>*&);
 
-	TreeNode<T>* Find (T, TreeNode<T>*);
+	TreeNode<T>* Find (type_cref, TreeNode<T>*);
 
 public:
 
-	BST (compare_f<T> = less<T> ());
-	BST (initializer_list<T>, compare_f<T> = less<T>());
+	BST (func_cref = less<T> ());
+	BST (init_cref, func_cref = less<T>());
 	BST (const BST&);
 	BST (BST&&);
 	~BST ();
 
-	void Insert (T);
-	//void Remove (T);
+	void Insert (type_cref);
+	//void Remove (type_cref);
 
 	bool Empty ();
 	bool Leaf ();
 
 	void Clear ();
 
-	void setComparator (const compare_f<T>&);
+	void setComparator (func_cref);
 	compare_f<T> getComparator ();
 
 	uint Size ();
 	int getDepth ();
-	int getLeafNum ();
+	uint getLeafNum ();
 
 	string toString ();
-	T& operator[] (T);
+	T& operator[] (type_cref);
 
-	BST operator= (const BST&);
-	BST operator= (BST&&);
+	BST& operator= (const BST&);
+	BST& operator= (BST&&);
 };
 
 #endif // !__TREE__

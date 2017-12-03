@@ -28,13 +28,13 @@ for each Node:
 #include "bst.h"
 
 template<class T>
-BST<T>::BST (compare_f<T> fcomparator)
+BST<T>::BST (func_cref fcomparator)
 	: comparator (fcomparator), root (nullptr)
 {
 }
 
 template<class T>
-BST<T>::BST (initializer_list<T> init, compare_f<T> fcomparator)
+BST<T>::BST (init_cref init, func_cref fcomparator)
 {
 	setComparator (fcomparator);
 
@@ -83,13 +83,13 @@ inline void BST<T>::Copy (const BST& tree)
 }
 
 template<class T>
-inline void BST<T>::CreateRoot (T key)
+inline void BST<T>::CreateRoot (type_cref key)
 {
 	root = new TreeNode<T> (key);
 }
 
 template<class T>
-void BST<T>::Insert (T key, TreeNode<T>* n)
+void BST<T>::Insert (type_cref key, TreeNode<T>* n)
 {
 	if (comparator (key, n->key))
 	{
@@ -111,7 +111,7 @@ void BST<T>::Insert (T key, TreeNode<T>* n)
 }
 
 template<class T>
-inline void BST<T>::Insert (T key)
+inline void BST<T>::Insert (type_cref key)
 {
 	if (Empty ())
 		CreateRoot (key);
@@ -173,7 +173,7 @@ inline compare_f<T> BST<T>::getComparator ()
 }
 
 template<class T>
-inline void BST<T>::setComparator (const compare_f<T>& fcomparator)
+inline void BST<T>::setComparator (func_cref fcomparator)
 {
 	comparator = fcomparator;
 }
@@ -209,25 +209,25 @@ inline int BST<T>::getDepth ()
 }
 
 template<class T>
-int BST<T>::getLeafNum (TreeNode<T>* n)
+uint BST<T>::getLeafNum (TreeNode<T>* n)
 {
 	if (n == nullptr)
 		return 0;
 
-	if (Leaf (n))
+	if (n->isLeaf())
 		return 1;
 
 	return getLeafNum (n->left) + getLeafNum (n->right);
 }
 
 template<class T>
-inline int BST<T>::getLeafNum ()
+inline uint BST<T>::getLeafNum ()
 {
 	return getLeafNum (root);
 }
 
 template<class T>
-TreeNode<T>* BST<T>::Find (T key, TreeNode<T>* n)
+TreeNode<T>* BST<T>::Find (type_cref key, TreeNode<T>* n)
 {
 	if (n == nullptr || n->key == key)
 		return n;
@@ -239,7 +239,7 @@ TreeNode<T>* BST<T>::Find (T key, TreeNode<T>* n)
 }
 
 template<class T>
-inline T& BST<T>::operator[](T key)
+inline T& BST<T>::operator[](type_cref key)
 {
 	TreeNode<T>* tmp = Find (key, root);
 
@@ -250,14 +250,14 @@ inline T& BST<T>::operator[](T key)
 }
 
 template<class T>
-inline BST<T> BST<T>::operator= (const BST& tree)
+inline BST<T>& BST<T>::operator= (const BST& tree)
 {
 	Copy (tree);
 	return tree;
 }
 
 template<class T>
-inline BST<T> BST<T>::operator= (BST&& tree)
+inline BST<T>& BST<T>::operator= (BST&& tree)
 {
 	Copy (move (tree));
 	return local;
