@@ -85,4 +85,13 @@ GENERIC_TEMP bool inRange (T value, T minV, T maxV)
 	return !outOfRange (value, minV, maxV);
 }
 
+inline bool isnum (const string& str)
+{
+	for (uint i = 0; i < str.size (); i++)
+		if (!isdigit (str.at (i)))
+			return false;
+
+	return true;
+}
+
 #endif /*__BASICS__*/
