@@ -1,10 +1,11 @@
 #include "Akimal.h"
 
-inline Akimal::Akimal (const string& _path)
+inline Akimal::Akimal (string_cref _path)
 {
-	comparator = less<> ();
+	root = nullptr;
+	comparator = less<const GameData> ();
 	path = _path;
-	load (_path);
+	load (path);
 	size = Size ();
 }
 
@@ -43,7 +44,7 @@ inline void Akimal::save ()
 	save (path);
 }
 
-inline void Akimal::save (const string& _path)
+inline void Akimal::save (string_cref _path)
 {
 	size = 0;
 	assignWeight (root);
@@ -53,7 +54,7 @@ inline void Akimal::save (const string& _path)
 	o.close ();
 }
 
-void Akimal::load (const string& _path)
+void Akimal::load (string_cref _path)
 {
 	Clear ();
 
