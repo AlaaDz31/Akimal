@@ -4,7 +4,8 @@
 #include <functional>
 #include "nodes.h"
 
-GENERIC_TEMP using compare_f = function<bool (T, T)>;
+template<class T>
+using compare_f = function<bool (T, T)>;
 
 template<class T>
 class BST
@@ -12,10 +13,11 @@ class BST
 protected:
 	using type_cref = const T&;
 	using init_cref = const initializer_list<T>&;
-	using func_cref = const compare_f<T>&;
+	using compare_f = compare_f<T>;
+	using func_cref = const BST::compare_f&;
 
 	TreeNode<T>* root;
-	compare_f<type_cref> comparator;
+	compare_f<T> comparator;
 	
 	void CreateRoot (type_cref);
 
@@ -49,7 +51,7 @@ public:
 	void Clear ();
 
 	void setComparator (func_cref);
-	compare_f<T> getComparator ();
+	compare_f getComparator ();
 
 	uint Size ();
 	int getDepth ();
