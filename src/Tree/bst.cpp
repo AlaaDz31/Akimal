@@ -6,21 +6,21 @@ Remove:
 for each Node:
 	/// BEGIN RECURSION
 	if (me->key > _to_delete && !me->isLeaf()) then /// GO LEFT
-		• Node* tmp = thisfoo(me->left)
-		• if (tmp != nullptr)
-			• del me->left
-			• me->left = tmp->left
+		â€¢ Node* tmp = thisfoo(me->left)
+		â€¢ if (tmp != nullptr)
+			â€¢ del me->left
+			â€¢ me->left = tmp->left
 	else if (me->key <= to_delete && !me->isLeaf()) then
-		• Node* tmp = thisfoo(me->right)
-		• if (tmp != nullptr)
-			• del me->right
-			• me->right = tmp->right
+		â€¢ Node* tmp = thisfoo(me->right)
+		â€¢ if (tmp != nullptr)
+			â€¢ del me->right
+			â€¢ me->right = tmp->right
 	else /// THIS IS TO DELETE
 	/// NEED TO UNIFY LEFT AND RIGHT FOR PARENT
-		• if (left == nullptr) then
-		• else
-			• RECURSION: me->left.setToLeafestRight(me->right) as right
-		• ret &me
+		â€¢ if (left == nullptr) then
+		â€¢ else
+			â€¢ RECURSION: me->left.setToLeafestRight(me->right) as right
+		â€¢ ret &me
 	ret nullptr	/// WILL BE DISCARDED
 */
 
@@ -167,7 +167,7 @@ inline bool BST<T>::Leaf ()
 }
 
 template<class T>
-inline compare_f<T> BST<T>::getComparator ()
+inline compare_f BST<T>::getComparator ()
 {
 	return comparator;
 }
