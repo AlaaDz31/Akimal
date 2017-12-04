@@ -21,24 +21,12 @@ STD;
 #define unexcepted_exception	exception ("An unexcepted exception has occurred!")
 #define local					(*this)
 
-
-
 #define TEMP(t)					template<class t>
 #define GENERIC_TEMP			TEMP(T)
 #define CLS						system("cls")
 #define PAUSE					system("pause")
 #define PAUSEN					system("pause>nul")
 #define END_MAIN				PAUSEN; return 0
-
-
-					
-					
-					
-
-
-
-
-
 
 typedef unsigned short			ushort;
 typedef unsigned int			uint;
