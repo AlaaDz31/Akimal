@@ -6,24 +6,23 @@ Remove:
 for each Node:
 	/// BEGIN RECURSION
 	if (me->key > _to_delete && !me->isLeaf()) then /// GO LEFT
-		â€¢ Node* tmp = thisfoo(me->left)
-		â€¢ if (tmp != nullptr)
-			â€¢ del me->left
-			â€¢ me->left = tmp->left
+		• Node* tmp = thisfoo(me->left)
+		• if (tmp != nullptr)
+			• del me->left
+			• me->left = tmp->left
 	else if (me->key <= to_delete && !me->isLeaf()) then
-		â€¢ Node* tmp = thisfoo(me->right)
-		â€¢ if (tmp != nullptr)
-			â€¢ del me->right
-			â€¢ me->right = tmp->right
+		• Node* tmp = thisfoo(me->right)
+		• if (tmp != nullptr)
+			• del me->right
+			• me->right = tmp->right
 	else /// THIS IS TO DELETE
 	/// NEED TO UNIFY LEFT AND RIGHT FOR PARENT
-		â€¢ if (left == nullptr) then
-		â€¢ else
-			â€¢ RECURSION: me->left.setToLeafestRight(me->right) as right
-		â€¢ ret &me
+		• if (left == nullptr) then
+		• else
+			• RECURSION: me->left.setToLeafestRight(me->right) as right
+		• ret &me
 	ret nullptr	/// WILL BE DISCARDED
 */
-
 
 #include "bst.h"
 
@@ -63,7 +62,7 @@ BST<T>::~BST ()
 }
 
 template<class T>
-void BST<T>::Copy (TreeNode<T>* from, TreeNode<T>*& to)
+void BST<T>::Copy (node_p from, node_p& to)
 {
 	to = new TreeNode<T> (from->key, from->left, from->right);
 
@@ -89,7 +88,7 @@ inline void BST<T>::CreateRoot (type_cref key)
 }
 
 template<class T>
-void BST<T>::Insert (type_cref key, TreeNode<T>* n)
+void BST<T>::Insert (type_cref key, node_p n)
 {
 	if (comparator (key, n->key))
 	{
@@ -120,7 +119,7 @@ inline void BST<T>::Insert (type_cref key)
 }
 
 template<class T>
-void BST<T>::Dispose (TreeNode<T>* n)
+void BST<T>::Dispose (node_p n)
 {
 	if (n != nullptr)
 	{
@@ -140,7 +139,7 @@ inline void BST<T>::Clear ()
 }
 
 template<class T>
-string BST<T>::toString (TreeNode<T>* n)
+string BST<T>::toString (node_p n)
 {
 	if (n == nullptr)
 		return null;
@@ -167,7 +166,7 @@ inline bool BST<T>::Leaf ()
 }
 
 template<class T>
-inline compare_f BST<T>::getComparator ()
+inline func_cref<T> BST<T>::getComparator ()
 {
 	return comparator;
 }
@@ -179,7 +178,7 @@ inline void BST<T>::setComparator (func_cref fcomparator)
 }
 
 template<class T>
-uint BST<T>::Size (TreeNode<T>* n)
+uint BST<T>::Size (node_p n)
 {
 	if (n == nullptr)
 		return 0;
@@ -194,7 +193,7 @@ inline uint BST<T>::Size ()
 }
 
 template<class T>
-int BST<T>::getDepth (TreeNode<T>* n)
+int BST<T>::getDepth (node_p n)
 {
 	if (n == nullptr)
 		return -1;
@@ -209,7 +208,7 @@ inline int BST<T>::getDepth ()
 }
 
 template<class T>
-uint BST<T>::getLeafNum (TreeNode<T>* n)
+uint BST<T>::getLeafNum (node_p n)
 {
 	if (n == nullptr)
 		return 0;
@@ -227,7 +226,7 @@ inline uint BST<T>::getLeafNum ()
 }
 
 template<class T>
-TreeNode<T>* BST<T>::Find (type_cref key, TreeNode<T>* n)
+node_p<T> BST<T>::Find (type_cref key, node_p n)
 {
 	if (n == nullptr || n->key == key)
 		return n;
@@ -239,9 +238,9 @@ TreeNode<T>* BST<T>::Find (type_cref key, TreeNode<T>* n)
 }
 
 template<class T>
-inline T& BST<T>::operator[](type_cref key)
+T& BST<T>::operator[](type_cref key)
 {
-	TreeNode<T>* tmp = Find (key, root);
+	node_p tmp = Find (key, root);
 
 	if (tmp == nullptr)
 		throw keynotfound_exception;
@@ -250,14 +249,14 @@ inline T& BST<T>::operator[](type_cref key)
 }
 
 template<class T>
-inline BST<T>& BST<T>::operator= (const BST& tree)
+inline bst_ref<T> BST<T>::operator= (const BST& tree)
 {
 	Copy (tree);
 	return tree;
 }
 
 template<class T>
-inline BST<T>& BST<T>::operator= (BST&& tree)
+inline bst_ref<T> BST<T>::operator= (BST&& tree)
 {
 	Copy (move (tree));
 	return local;
