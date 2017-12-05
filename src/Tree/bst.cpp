@@ -74,7 +74,7 @@ void BST<T>::Copy (node_p from, node_p& to)
 }
 
 template<class T>
-inline void BST<T>::Copy (const BST& tree)
+inline void BST<T>::Copy (bst_cref tree)
 {
 	Clear ();
 	setComparator (tree.comparator);
