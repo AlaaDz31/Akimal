@@ -1,36 +1,39 @@
 #ifndef __NODES__
 #define __NODES__
 
-#include "../Utils/basics.h"
+#include "..\Utils\basics.h"
 
-GENERIC_TEMP struct UniNode
+template<class T>
+struct UniNode
 {
 	UniNode* next;
 	T elem;
 
 	UniNode ();
-	UniNode (T);
-	UniNode (T, UniNode*);
+	UniNode (const T&);
+	UniNode (const T&, UniNode*);
 };
 
-GENERIC_TEMP struct Node
+template<class T>
+struct Node
 {
 	Node* next, *previous;
 	T elem;
 
 	Node ();
-	Node (T);
-	Node (T, Node*, Node*);
+	Node (const T&);
+	Node (const T&, Node*, Node*);
 };
 
-GENERIC_TEMP struct TreeNode
+template<class T>
+struct TreeNode
 {
 	TreeNode* right, *left;
 	T key;
 
 	TreeNode();
-	TreeNode(T);
-	TreeNode(T, TreeNode*, TreeNode*);
+	TreeNode(const T&);
+	TreeNode(const T&, TreeNode*, TreeNode*);
 
 	bool isLeaf();
 	bool isParent();
@@ -46,13 +49,13 @@ UniNode<T>::UniNode ()
 }
 
 template<class T>
-UniNode<T>::UniNode (T _value)
+UniNode<T>::UniNode (const T& _value)
 	: next (nullptr), elem (_value)
 {		// isolated UniNode
 }
 
 template<class T>
-UniNode<T>::UniNode (T _value, UniNode* _next)
+UniNode<T>::UniNode (const T& _value, UniNode* _next)
 	: next (_next), elem (_value)
 {		// matched UniNode
 }
@@ -68,13 +71,13 @@ Node<T>::Node ()
 }
 
 template<class T>
-Node<T>::Node (T _value)
+Node<T>::Node (const T& _value)
 	: next (nullptr), previous (nullptr), elem (_value)
 {		// isolated node
 }
 
 template<class T>
-Node<T>::Node (T _value, Node* _prev, Node* _next)
+Node<T>::Node (const T& _value, Node* _prev, Node* _next)
 	: next (_next), previous (_prev), elem (_value)
 {		// matched node
 }
@@ -90,13 +93,13 @@ TreeNode<T>::TreeNode()
 }
 
 template<class T>
-TreeNode<T>::TreeNode(T _key)
+TreeNode<T>::TreeNode(const T& _key)
 	: right(nullptr), left(nullptr), key(_key)
 {		// isolated node
 }
 
 template<class T>
-TreeNode<T>::TreeNode(T _key, TreeNode* _left, TreeNode* _right)
+TreeNode<T>::TreeNode(const T& _key, TreeNode* _left, TreeNode* _right)
 	: right(_right), left(_left), key(_key)
 {		// matched node
 }
@@ -112,6 +115,5 @@ inline bool TreeNode<T>::isParent() {
 }
 
 #pragma endregion
-
 
 #endif // !__NODES__
