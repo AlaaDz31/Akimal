@@ -14,7 +14,6 @@ struct GameData
 
 	string toString ();
 
-	bool operator<(const GameData&);
 	bool operator==(const GameData&);
 	bool operator!=(const GameData&);
 };
@@ -39,11 +38,6 @@ inline string GameData::toString ()
 	return weight + "|" + data;
 }
 
-inline bool GameData::operator<(const GameData& right)
-{
-	return weight < right.weight;
-}
-
 inline bool GameData::operator==(const GameData& _data)
 {
 	return weight == _data.weight && data == _data.data;
@@ -52,6 +46,16 @@ inline bool GameData::operator==(const GameData& _data)
 inline bool GameData::operator!=(const GameData& _data)
 {
 	return !(local == _data);
+}
+
+inline bool operator<(const GameData& _left, const GameData& _right)
+{
+	return _left.weight < _right.weight;
+}
+
+inline string to_string (const GameData& _data)
+{
+	return static_cast<GameData>(_data).toString ();
 }
 
 #endif // !__GAMEDATA__
