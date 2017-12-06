@@ -1,46 +1,54 @@
-#ifndef __AKIMAL__
-#define __AKIMAL__
-
+#pragma once
 #include <fstream>
-#include "GameData.h"
-#include "..\..\lib\bst.cpp"
+#include "..\..\lib\nodes.h"
+
+#define QUESTION_ID '?'
+
+/*
+ * maybe Size() methods aren not needed
+*/
 
 class Akimal
-	: private BST<GameData>
 {
-	using DataNode = TreeNode<GameData>;
-	using string_cref = const string&;
+	/// aliases
+	using str_node = TreeNode<string>;
+	using node_p = TreeNode<string>*;
 
-	ushort size;
-	string path;	// default file path
+	/// recursive methods:
+	void Dispose(node_p);
+	size_t Size(node_p) const;
+	uint getAnswerNum(node_p) const;
 
-	void assignWeight (DataNode*);		// assigns positive weights to all nodes, for later saving to file
-	void save (ofstream&, DataNode*);
+	//void Game(node_p);
+	void Save(ofstream&, node_p);
+	uint Load(ifstream&, node_p);	// returns number of lines read, corresponding to current size
 
 public:
-	using BST::Empty;
-	using BST::Clear;
-
-	Akimal () : BST<GameData> () {}
-	/*explicit*/ Akimal (string_cref);	// loads from file; there's no auto casting
-	~Akimal () = default;
-
-	// copy is not permitted
+	Akimal () = default;
 	Akimal (const Akimal&) = delete;
-	Akimal& operator=(const Akimal&) = delete;
-
-	// move is default move
 	Akimal (Akimal&&) = default;
-	Akimal& operator=(Akimal&&) = default;
+	Akimal(string);
+	~Akimal();
 
-	//void Game ();
+	bool Empty() const;
+	void Clear();
+	size_t Size() const;
+	uint getAnswerNum() const;
+	uint getQuestionNum() const;
 
-	void save ();					// save to default file
-	void save (string_cref);		// save to a different file
-	void load (string_cref);		// load tree from file
+	//void Game();
+	void Save();			// save to default path
+	void Save(string);		// save to a specific path
+	void Load(string);		// load from a specific path
+	void Reload();			// reload info from default path, if it's set
 
-	ushort AnswerNum ();
-	ushort QuestionNum ();
+	Akimal& operator= (const Akimal&) = delete;
+	Akimal& operator= (Akimal&&) = default;
+
+private:
+
+	node_p root = nullptr;	// root of the tree
+	size_t size = 0;		// size of the tree
+	string path = null;		// path of default file
 };
 
-#endif // !__AKIMAL__
