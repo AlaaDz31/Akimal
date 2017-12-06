@@ -238,7 +238,7 @@ node_p<T> BST<T>::Find (type_cref key, node_p n)
 }
 
 template<class T>
-T& BST<T>::operator[](type_cref key)
+type_ref<T> BST<T>::operator[](type_cref key)
 {
 	node_p tmp = Find (key, root);
 

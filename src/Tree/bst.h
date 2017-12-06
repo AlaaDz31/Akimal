@@ -11,6 +11,7 @@ class BST
 protected:
 	using bst_ref = BST&;							// bst reference
 	using bst_cref = const BST&;					// bst const reference
+	using type_ref = T&;							// template type T reference
 	using type_cref = const T&;						// template type T const reference
 	using init_cref = const initializer_list<T>&;	// initializer_list const reference
 	using compare_f = function<bool (T, T)>;		// specific function
@@ -59,7 +60,7 @@ public:
 	uint getLeafNum ();
 
 	string toString ();
-	T& operator[] (type_cref);
+	type_ref operator[] (type_cref);
 
 	bst_ref operator= (const BST&);
 	bst_ref operator= (BST&&);
@@ -77,5 +78,8 @@ using func_cref = const compare_f<T>&;
 
 template<class T>
 using bst_ref = BST<T>&;
+
+template<class T>
+using type_ref = T&;
 
 #endif // !__TREE__
