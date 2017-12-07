@@ -13,7 +13,7 @@ STD;
 #define null					""
 #define in						:
 #define extends                 :
-
+#define elif                    else if
 #define catch_exception(ex)		catch (const exception& ex)
 #define emptylist_exception		out_of_range ("List is empty!")
 #define keynotfound_exception	exception("Key was not found")
@@ -21,12 +21,24 @@ STD;
 #define unexcepted_exception	exception ("An unexcepted exception has occurred!")
 #define local					(*this)
 
+#define MAX_SIZE(t)				(pow (2, 8 * sizeof (t)) - 1)
+#define MIN_SIZE(t)				(-pow (2, 8 * sizeof (t)) + 1)
 #define TEMP(t)					template<class t>
 #define GENERIC_TEMP			TEMP(T)
 #define CLS						system("cls")
 #define PAUSE					system("pause")
 #define PAUSEN					system("pause>nul")
 #define END_MAIN				PAUSEN; return 0
+#define FLUSH_IN				fflush(stdin)
+#define FLUSH_OUT				fflush(stdout)
+#define ENDL					cout << endl
+#define endll					endl << endl
+#define ENDLL					cout << endll
+#define SET_TIME				srand(time(NULL))
+#define typeof(v)				typeid(v).name()
+
+// gets and returns a simple variable in input with check
+#define insertCheck (minV, maxV, s, e, v)	cout << s; while (cin >> v && v < minV || v > maxV) cout << e << endl << "Retry: "
 
 typedef unsigned short			ushort;
 typedef unsigned int			uint;
@@ -80,6 +92,24 @@ inline bool isnum (const string& str)
 			return false;
 
 	return true;
+}
+
+inline void LowerCase(string& str) {
+	transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+
+inline void UpperCase(string& str) {
+	transform(str.begin(), str.end(), str.begin(), ::toupper);
+}
+
+inline bool PositiveAnswer(string clause) {
+	LowerCase(clause);
+	return (clause == "y" || clause == "yes");
+}
+
+inline bool NegativeAnswer(string clause) {
+	LowerCase(clause);
+	return (clause == "n" || clause == "no");
 }
 
 #endif /*__BASICS__*/

@@ -1,153 +1,224 @@
 #include "Akimal.h"
 
-inline Akimal::Akimal (string_cref _path)
+Akimal::Akimal(string _path)
 {
-	root = nullptr;
-	comparator = less<const GameData> ();
-	path = _path;
-	load (path);
-	size = Size ();
+	// values are assigned by default
+	Load(_path);	// path is updated here
 }
 
-void Akimal::assignWeight (DataNode* n)
+Akimal::~Akimal()
+{
+	Clear();
+}
+
+void Akimal::Dispose(node_p n)
 {
 	if (n != nullptr)
 	{
-		assignWeight (n->left);
-		n->key.weight = size++;
-		assignWeight (n->right);
+		Dispose(n->left);
+		Dispose(n->right);
+		delete n;
 	}
 }
 
-void Akimal::save (ofstream& o, DataNode* n)
+inline void Akimal::Clear()
 {
-	if (o.good ())
-	{
-		if (n != nullptr)
-		{
-			o << n->key.toString ();
-			save (o, n->left);
-			save (o, n->right);
-		}
-	}
+	if (!Empty())
+		Dispose(root);
 
-	else
-	{		// generic error
-
-		clog << "An error occurred while trying to save data." << endl;
-		Clear ();
-	}
+	root = nullptr; //Reset tree to default status
+	size = 0;
 }
 
-void Akimal::Game(DataNode * n)
+inline bool Akimal::Empty() const
 {
-	string res;
-	if (n->isParent()) {
-		cout << n->key.data << "?";
-		do {
-			cin >> res;
-			transform(res.begin(), res.end(), res.begin(), tolower);
-			if (res == "y") return Game(n->left);
-			else if (res == "n") return Game(n->right);
-			else cout << "Not Valid\n";
-		} while (res != "y"&&res != "n");
-	}
-	else {
-		cout << n->key.data << "? (Yes/No) ";
-		do {
-			cin >> res;
-			transform(res.begin(), res.end(), res.begin(), tolower);
-			if (res == "y"){
-				cout << "I won.\n";
-				return;
-			}
-			else if (res == "n") {
-				AddEntry(n);
-				return;
-			}
-			else cout << "Not Valid\n";
-		} while (res != "y"&&res != "n");
-	}
+	return root == nullptr;
 }
 
-void Akimal::AddEntry(DataNode *n)
+inline size_t Akimal::Size() const
 {
-	string input;
-	GameData tmp = n->key;
-	cout << "Insert intended animal: ";
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	do {
-		getline(cin, input);
-	} while (!input.empty());
-	n->left = new DataNode(GameData(input));
-	n->right = new DataNode(tmp);
-	cout << "Insert difference between animals: ";
-	do {
-		getline(cin, input);
-	} while (!input.empty());
-	n->key.data = input;
+	return Size(root);
+}
+
+size_t Akimal::Size(node_p n) const
+{
+	if (n == nullptr)
+		return 0;
+
+	return 1 + Size(n->left) + Size(n->right);
+}
+
+inline uint Akimal::getAnswerNum() const
+{
+	return getAnswerNum(root);
+}
+
+inline uint Akimal::getQuestionNum() const
+{
+	return Size() - getAnswerNum();
+}
+
+uint Akimal::getAnswerNum(node_p n) const
+{
+	if (n == nullptr)
+		return 0;
+
+	if (n->isLeaf())
+		return 1;
+
+	return getAnswerNum(n->left) + getAnswerNum(n->right);
 }
 
 void Akimal::Game()
 {
-	if (!Empty())
-		Game(root);
+	Game(root);
+}
+
+void Akimal::Game(node_p current)
+{
+	string input;
+	if (size == 0) return;
+	if (current->isParent()) {
+		cout << current->key << "? (y/n):";
+		do {
+			cin >> input;
+			if (PositiveAnswer(input))
+				return Game(current->left);
+			else if (NegativeAnswer(input))
+				return Game(current->right);
+			else
+				cout << "Not Valid\n";
+		} while (!PositiveAnswer(input) && !NegativeAnswer(input));
+	}
+	else {
+		cout << "I guess " << current->key << ". (Yes/No):";
+		do {
+			cin >> input;
+			if (PositiveAnswer(input))
+				cout << "I won.\n";
+			else if (NegativeAnswer(input))
+				AddEntry(current);
+			else
+				cout << "Not Valid\n";
+		} while (!PositiveAnswer(input) && !NegativeAnswer(input));
+	}
+}
+
+void Akimal::AddEntry(node_p current)
+{
+	string tmp = current->key, animal, question;
+	cout << "What animal did you meant?: ";
+	cin >> animal;
+	cout << "What is the difference between the two?: ";
+	cin >> question;
+	current->key = question;
+	current->left = new str_node(animal);
+	current->right = new str_node(tmp);
+}
+
+void Akimal::Save()
+{
+	Save(path);
+}
+
+inline void Akimal::Save(string _path)
+{
+	ofstream file(_path);
+
+	// ensure it can be overwritten
+	if (file.good()) {
+		Save(file, root);
+	}
 	else
-		clog << "Empty Tree @ Akimal::Game \n";
+		clog << "Save(string) @ Current configuration cannot be saved in " << _path << "." << endl;
+
+	file.close();
 }
 
-inline void Akimal::save ()
-{
-	save (path);
-}
+void Akimal::Save(ofstream& file, node_p node)
+{		// perform a pre-oreder function
 
-inline void Akimal::save (string_cref _path)
-{
-	size = 0;
-	assignWeight (root);
-
-	ofstream o (_path);
-	save (o, root);
-	o.close ();
-}
-
-void Akimal::load (string_cref _path)
-{
-	Clear ();
-
-	path = _path;
-	ifstream i (_path);	// file input stream
-	string line;		// stores input lines
-	int lineCnt = -1;	// line counter, needed to report format errors
-	GameData data;		// temporary stores data from lines
-
-	// if at the beginning is eof, it is empty
-	if (i.eof ())
-		clog << "File \"" << path << "\" is empty." << endl;
-
-	// insert each line, if the format is good
-	while (i.good () && getline (i, line) && ++lineCnt && GameData () != (data = GameData::checkFormat (line)))
-		Insert (data);
-
-	// end of file has not been reached
-	if (!i.eof ())
+	if (node->isParent())		// a question
 	{
-		// there is a line with an incorrect format
-		if (data == GameData ())
-			clog << "Error at line " << lineCnt << " in file \"" << path << "\": format is not correct." << endl;
-
-		clog << "An error occurred while trying to load data." << endl;
+		file << '\n' << QUESTION_ID << node->key;
+		Save(file, node->left);
+		Save(file, node->right);
 	}
 
-	i.close ();
+	else						// an answer
+		file << '\n' << node->key;
 }
 
-inline ushort Akimal::AnswerNum ()
+inline void Akimal::Reload()
 {
-	return getLeafNum ();
+	Load(path);
 }
 
-inline ushort Akimal::QuestionNum ()
+void Akimal::Load(string _path)
 {
-	return size - AnswerNum ();
+	// clear previous state and configuration
+	Clear();
+	path = _path;
+
+	ifstream file(path);
+
+	// ensure it can be read (not empty or damaged)
+	if (file.peek() == ifstream::traits_type::eof())
+		clog << "Load(string) @ File " << _path << " is empty! No data can be found." << endl;
+
+	else if (file.good())
+	{
+		// get number of lines during input process
+		string dummy;
+		getline(file, dummy);
+		int lines = Load(file, root);
+
+		// check if eof wasn't reached
+		if ((int)file.tellg() != ifstream::traits_type::eof())
+		{
+			clog << "Load(string) @ It was impossible to read the entire file at " << _path << "." << endl;
+			Clear();
+		}
+
+		// ensure no node has only one child
+		else if (lines % 2 == 0)
+		{
+			clog << "Load(string) @ An error occurred while reading file " << path << ": one or more lines are missing!" << endl;
+			Clear();
+		}
+
+		// after all checks, we know configuration is safe
+		else
+			size = lines;
+	}
+
+	else
+		clog << "Load(string) @ File " << _path << " cannot be loaded." << endl;
+
+	file.close();
+}
+
+uint Akimal::Load(ifstream& file, node_p& n)
+{
+	// if eof was reached, no new line
+	if (file.eof())
+		return 0;
+
+	string line;
+
+	if (getline(file, line))	// input successful
+	{
+		// check if line begins with '?'
+		if (line.at(0) == QUESTION_ID)
+		{
+			n = new str_node(line.substr(1));
+			return 1 + Load(file, n->left) + Load(file, n->right);
+		}
+
+		else
+			n = new str_node(line);
+	}
+	// if either there was a reading error in a line,
+	//	or it was a corrent answer line
+	return 1;
 }

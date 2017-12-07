@@ -1,7 +1,7 @@
 #ifndef __NODES__
 #define __NODES__
 
-#include "..\Utils\basics.h"
+#include "../Utils/basics.h"
 
 template<class T>
 struct UniNode
