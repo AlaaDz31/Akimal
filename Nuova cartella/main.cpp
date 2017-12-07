@@ -1,8 +1,7 @@
 #include "Akimal.h"
 
-
 int main() {
-	Akimal game("C:\\Users\\in4a11\\source\\repos\\test\\Debug\\tempDataFile.dat");
+	Akimal game("tempDataFile.txt");
 	string newGame;
 	do {
 		game.Game();
@@ -11,7 +10,5 @@ int main() {
 		PAUSE;
 		CLS;
 	} while (newGame=="y");
-	game.save();
-
-	END_MAIN;
+	game.Save();
 }
