@@ -1,54 +1,115 @@
 #pragma once
-#include <fstream>
-#include "..\..\lib\nodes.h"
 
-#define QUESTION_ID '?'
+#include <fstream>
+#include "../Node/nodes.h"
+
+#define QUESTION_ID '?' //easy-to-change question identifier in file. Allows for quick remaking of file rules
 
 /*
- * maybe Size() methods aren not needed
+ * TODO AND DISCUSSION
+ *	add possibility to play with a new or empty file
+ *	consider to log into kind of 'log.txt'
+ *	consider to add localization
+ *	verify which is faster: [ getline() ] or [ cin>>, cin.clear(), cin.ignore(streamsize) ]
+ *	maybe private only? Or only metadata-oriented?
 */
 
 class Akimal
 {
-	/// aliases
+	//Aliases and Private Methods Section
+private:
+
+	/// Aliases
 	using str_node = TreeNode<string>;
 	using node_p = TreeNode<string>*;
 
-	/// recursive methods:
-	void Dispose(node_p);
-	size_t Size(node_p) const;
-	uint getAnswerNum(node_p) const;
+	/// Recursive methods
+	void Dispose(node_p);				// Free memory space of sub-tree
+	uint getAnswerNum(node_p) const;	// Retrieves number of answers in sub-tree
+	void Game(node_p);					// Recursive function for main game
+	void AddEntry(node_p);				// Add new Question-Answers group at node
 
-	//void Game(node_p);
-	void Save(ofstream&, node_p);
-	uint Load(ifstream&, node_p);	// returns number of lines read, corresponding to current size
+	void Save(ofstream&, node_p);		// Saves sub-tree to specified ofstream
+	uint Load(ifstream&, node_p&);		// Loads sub-tree from specified istream. Returns number of lines read, corresponding to current size
 
+	//Public Methods Section
 public:
-	Akimal () = default;
-	Akimal (const Akimal&) = delete;
-	Akimal (Akimal&&) = default;
-	Akimal(string);
-	~Akimal();
 
-	bool Empty() const;
-	void Clear();
-	size_t Size() const;
-	uint getAnswerNum() const;
-	uint getQuestionNum() const;
+	/// Constructors and memory management
+	Akimal() = default;					// C++11 compliant
+	Akimal(const Akimal&) = delete;		// Disabled Copy Constructor (only single istance of specified game) - C++11 compliant 
+	Akimal(Akimal&&) = default;			// Defaulted Move Constructor - C++11 compliant
+	Akimal(string);						// Constructor passing file path
+	~Akimal();							// Destructor
 
-	//void Game();
-	void Save();			// save to default path
-	void Save(string);		// save to a specific path
-	void Load(string);		// load from a specific path
-	void Reload();			// reload info from default path, if it's set
+	/// Content Data Management
+	bool Empty() const;					// Whether the game tree is empty
+	void Clear();						// Clears the tree to default state
+	size_t Size() const;				// Get Total Number of Nodes
+	uint getAnswerNum() const;			// Get Number of Answers (Leaves)
+	uint getQuestionNum() const;		// Get Number of Questions (Non-Leaves)
 
-	Akimal& operator= (const Akimal&) = delete;
-	Akimal& operator= (Akimal&&) = default;
+	/// Game Methods
+	void Game();						// Main Game Method
 
+	void Save();						// Save to default path
+	void Save(string);					// Save to a specific path
+	void Load(string);					// Load from a specific path
+	void Reload();						// Reload info from default path, if it's set
+
+	/// Operators
+	Akimal& operator= (const Akimal&) = delete;	// Disabled Copy Assignment Operator - C++11 compliant
+	Akimal& operator= (Akimal&&) = default;		// Defaulted Move Assignment Operator - C++11 compliant
+
+	//Private Data Members Section
 private:
 
-	node_p root = nullptr;	// root of the tree
-	size_t size = 0;		// size of the tree
-	string path = null;		// path of default file
+	node_p root = nullptr;	// Root of the tree
+	size_t size = 0;		// Size of the tree
+	string path = null;		// Path of default file
 };
 
+inline void Akimal::Clear()
+{
+	if (!Empty())
+		Dispose(root);
+
+	root = nullptr; //Reset tree to default status
+	size = 0;
+}
+
+inline bool Akimal::Empty() const
+{
+	return root == nullptr;
+}
+
+inline size_t Akimal::Size() const
+{
+	return size;
+}
+
+inline uint Akimal::getAnswerNum() const
+{
+	return getAnswerNum(root);
+}
+
+inline uint Akimal::getQuestionNum() const
+{
+	return Size() - getAnswerNum();
+}
+
+inline void Akimal::Game()
+{
+	if (!Empty())
+		Game(root);
+}
+
+inline void Akimal::Save()
+{
+	Save(path);
+}
+
+inline void Akimal::Reload()
+{
+	Load(path);
+}

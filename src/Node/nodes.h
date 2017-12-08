@@ -1,37 +1,38 @@
-#ifndef __NODES__
-#define __NODES__
+#pragma once
 
-#include "basics.h"
+#include "../Utils/basics.h"
 
 template<class T>
 struct UniNode
 {
-	UniNode* next;
-	T elem;
+	UniNode* next = nullptr;
+	T elem = T();
 
-	UniNode ();
-	UniNode (const T&);
-	UniNode (const T&, UniNode*);
+	UniNode() = default;
+	UniNode(const T&);
+	UniNode(const T&, UniNode*);
 };
 
 template<class T>
 struct Node
 {
-	Node* next, *previous;
-	T elem;
+	Node* next = nullptr;
+	Node* previous = nullptr;
+	T elem = T();
 
-	Node ();
-	Node (const T&);
-	Node (const T&, Node*, Node*);
+	Node() = default;
+	Node(const T&);
+	Node(const T&, Node*, Node*);
 };
 
 template<class T>
 struct TreeNode
 {
-	TreeNode* right, *left;
-	T key;
+	TreeNode* right = nullptr;
+	TreeNode* left = nullptr;
+	T key = T();
 
-	TreeNode();
+	TreeNode() = default;
 	TreeNode(const T&);
 	TreeNode(const T&, TreeNode*, TreeNode*);
 
@@ -43,20 +44,14 @@ struct TreeNode
 #pragma region UniNode
 
 template<class T>
-UniNode<T>::UniNode ()
-	: next (nullptr)
-{		// default UniNode
-}
-
-template<class T>
-UniNode<T>::UniNode (const T& _value)
-	: next (nullptr), elem (_value)
+UniNode<T>::UniNode(const T& _value)
+	: elem(_value)
 {		// isolated UniNode
 }
 
 template<class T>
-UniNode<T>::UniNode (const T& _value, UniNode* _next)
-	: next (_next), elem (_value)
+UniNode<T>::UniNode(const T& _value, UniNode* _next)
+	: next(_next), elem(_value)
 {		// matched UniNode
 }
 
@@ -65,20 +60,14 @@ UniNode<T>::UniNode (const T& _value, UniNode* _next)
 #pragma region Node
 
 template<class T>
-Node<T>::Node ()
-	: next (nullptr), previous (nullptr)
-{		// default node
-}
-
-template<class T>
-Node<T>::Node (const T& _value)
-	: next (nullptr), previous (nullptr), elem (_value)
+Node<T>::Node(const T& _value)
+	: elem(_value)
 {		// isolated node
 }
 
 template<class T>
-Node<T>::Node (const T& _value, Node* _prev, Node* _next)
-	: next (_next), previous (_prev), elem (_value)
+Node<T>::Node(const T& _value, Node* _prev, Node* _next)
+	: next(_next), previous(_prev), elem(_value)
 {		// matched node
 }
 
@@ -87,14 +76,8 @@ Node<T>::Node (const T& _value, Node* _prev, Node* _next)
 #pragma region TreeNode
 
 template<class T>
-TreeNode<T>::TreeNode()
-	: right(nullptr), left(nullptr)
-{		// default node
-}
-
-template<class T>
 TreeNode<T>::TreeNode(const T& _key)
-	: right(nullptr), left(nullptr), key(_key)
+	: key(_key)
 {		// isolated node
 }
 
@@ -105,15 +88,15 @@ TreeNode<T>::TreeNode(const T& _key, TreeNode* _left, TreeNode* _right)
 }
 
 template<class T>
-inline bool TreeNode<T>::isLeaf() {
+inline bool TreeNode<T>::isLeaf()
+{
 	return right == nullptr && left == nullptr;
 }
 
 template<class T>
-inline bool TreeNode<T>::isParent() {
+inline bool TreeNode<T>::isParent()
+{
 	return !isLeaf();
 }
 
 #pragma endregion
-
-#endif // !__NODES__
