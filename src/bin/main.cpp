@@ -6,7 +6,7 @@
 #define DEFAULT_LOG		"../Akimal/bin/res/log.txt"
 #define DEFAULT_SPLASH	"../Akimal/bin/res/Title_splashscreen.txt"
 
-// Displays splash screen
+// Displays splash screen (game art displayed at launch)
 void ShowSplashScreen();
 
 // Returns a string with an art
@@ -21,9 +21,9 @@ int main()
 	ofstream log(DEFAULT_LOG);
 	clog.rdbuf(log.rdbuf());	// redirect stderr stream to the log file
 
-	string answer,	// holder for all answers
+	string 	answer,		// holder for all answers
 		menu_art;	// holder for art string
-	Akimal game;	// instance to play the game
+	Akimal game;		// instance of game
 
 	ShowSplashScreen();
 	PAUSEN; CLS;
@@ -31,7 +31,7 @@ int main()
 
 	do
 	{
-		cout << menu_art << endl << endl;
+		cout << menu_art << endl << endl; 
 		answer = FileSelection("Do you wish to use default file? (Yes/No) ");
 		game.Load(answer);
 
