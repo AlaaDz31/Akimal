@@ -64,4 +64,3 @@ private:
 	size_t size = 0;		// Size of the tree
 	string path = null;		// Path of default file
 };
-
