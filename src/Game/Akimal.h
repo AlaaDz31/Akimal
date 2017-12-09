@@ -1,5 +1,4 @@
 #pragma once
-
 #include <fstream>
 #include "../Node/nodes.h"
 
@@ -7,24 +6,21 @@
 
 /*
  * TODO AND DISCUSSION
- *	add possibility to play with a new or empty file
- *	consider to log into kind of 'log.txt'
- *	consider to add localization
- *	verify which is faster: [ getline() ] or [ cin>>, cin.clear(), cin.ignore(streamsize) ]
- *	maybe private only? Or only metadata-oriented?
+ * maybe Size() methods aren not needed.
+ * maybe private only? Or only metadata-oriented?
 */
 
 class Akimal
 {
-	//Aliases and Private Methods Section
+	//Aliases and methods Section
 private:
-
-	/// Aliases
+	/// aliases
 	using str_node = TreeNode<string>;
 	using node_p = TreeNode<string>*;
 
-	/// Recursive methods
+	/// recursive methods:
 	void Dispose(node_p);				// Free memory space of sub-tree
+	size_t Size(node_p) const;			// Retrieves size of sub-tree
 	uint getAnswerNum(node_p) const;	// Retrieves number of answers in sub-tree
 	void Game(node_p);					// Recursive function for main game
 	void AddEntry(node_p);				// Add new Question-Answers group at node
@@ -36,11 +32,11 @@ private:
 public:
 
 	/// Constructors and memory management
-	Akimal() = default;					// C++11 compliant
-	Akimal(const Akimal&) = delete;		// Disabled Copy Constructor (only single istance of specified game) - C++11 compliant 
-	Akimal(Akimal&&) = default;			// Defaulted Move Constructor - C++11 compliant
-	Akimal(string);						// Constructor passing file path
-	~Akimal();							// Destructor
+	Akimal () = default;				// C++11 compliant
+	Akimal (const Akimal&) = delete;	// Disable Copy Constructor (only single istance of specified game) C++11 compliant 
+	Akimal (Akimal&&) = default;		// C++11 compliant
+	Akimal (string);
+	~Akimal();
 
 	/// Content Data Management
 	bool Empty() const;					// Whether the game tree is empty
@@ -51,65 +47,20 @@ public:
 
 	/// Game Methods
 	void Game();						// Main Game Method
-
+	
 	void Save();						// Save to default path
 	void Save(string);					// Save to a specific path
 	void Load(string);					// Load from a specific path
 	void Reload();						// Reload info from default path, if it's set
 
 	/// Operators
-	Akimal& operator= (const Akimal&) = delete;	// Disabled Copy Assignment Operator - C++11 compliant
-	Akimal& operator= (Akimal&&) = default;		// Defaulted Move Assignment Operator - C++11 compliant
+	Akimal& operator= (const Akimal&) = delete;	// Disabled copy operator C++11 compliant
+	Akimal& operator= (Akimal&&) = default;		// C++11 compliant
 
-	//Private Data Members Section
+	//Private Members Section
 private:
 
 	node_p root = nullptr;	// Root of the tree
 	size_t size = 0;		// Size of the tree
 	string path = null;		// Path of default file
 };
-
-inline void Akimal::Clear()
-{
-	if (!Empty())
-		Dispose(root);
-
-	root = nullptr; //Reset tree to default status
-	size = 0;
-}
-
-inline bool Akimal::Empty() const
-{
-	return root == nullptr;
-}
-
-inline size_t Akimal::Size() const
-{
-	return size;
-}
-
-inline uint Akimal::getAnswerNum() const
-{
-	return getAnswerNum(root);
-}
-
-inline uint Akimal::getQuestionNum() const
-{
-	return Size() - getAnswerNum();
-}
-
-inline void Akimal::Game()
-{
-	if (!Empty())
-		Game(root);
-}
-
-inline void Akimal::Save()
-{
-	Save(path);
-}
-
-inline void Akimal::Reload()
-{
-	Load(path);
-}
