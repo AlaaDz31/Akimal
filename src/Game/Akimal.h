@@ -53,6 +53,9 @@ public:
 	void Load(string);					// Load from a specific path
 	void Reload();						// Reload info from default path, if it's set
 
+	void setLocalization(string loc);
+	void setLocalizationFile(string path);
+
 	/// Operators
 	Akimal& operator= (const Akimal&) = delete;	// Disabled copy operator C++11 compliant
 	Akimal& operator= (Akimal&&) = default;		// C++11 compliant
@@ -63,4 +66,6 @@ private:
 	node_p root = nullptr;	// Root of the tree
 	size_t size = 0;		// Size of the tree
 	string path = null;		// Path of default file
+
 };
+

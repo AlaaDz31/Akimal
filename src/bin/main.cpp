@@ -1,93 +1,43 @@
 #include <sstream>
+#include "Options Loading\ini.h"
+#include "../Game/Localization/Localization.h"
 #include "../Game/Akimal.h"
 
-#define DEFAULT_ART		"../Akimal/bin/res/menu_text.txt"
-#define DEFAULT_FILE	"../Akimal/bin/res/akimal.txt"
-#define DEFAULT_LOG		"../Akimal/bin/res/log.txt"
-#define DEFAULT_SPLASH	"../Akimal/bin/res/Title_splashscreen.txt"
+int main() {
+	string menu_art;
 
-// Displays splash screen (game art displayed at launch)
-void ShowSplashScreen();
+	string opt = getKey("options", "save", "./Options.ini");
 
-// Returns a string with an art
-string GetArt();
+	Localization locale = get_Locale_From(getKey("options", "locale", "./Options.ini"), "./Locales.ini");
 
-// Assigns the file to read from
-string FileSelection(string);
+	cout << locale.ask_animal;
 
-int main()
-{
-	// save problems to a log file
-	ofstream log(DEFAULT_LOG);
-	clog.rdbuf(log.rdbuf());	// redirect stderr stream to the log file
-
-	string 	answer,		// holder for all answers
-		menu_art;	// holder for art string
-	Akimal game;		// instance of game
-
-	ShowSplashScreen();
-	PAUSEN; CLS;
-	menu_art = GetArt();
-
-	do
+	//getting ascii art
 	{
-		cout << menu_art << endl << endl; 
-		answer = FileSelection("Do you wish to use default file? (Yes/No) ");
-		game.Load(answer);
-
-		game.Game();
-
-		cout << "Do you want to keep playing? (Yes/No) ";
-		cin >> answer;
-
-		cin.clear();
-		cin.ignore (numeric_limits<streamsize>::max (), '\n');
-		ENPAUSE; CLS;
-
-	} while (PositiveAnswer(answer));
-	game.Save();
-	log.close();
-}
-
-void ShowSplashScreen()
-{
-	ifstream splashscreen(DEFAULT_SPLASH);
-	cout << splashscreen.rdbuf() << endl;
-	splashscreen.close();
-}
-
-string GetArt()
-{
-	string art;
-	ifstream menu_screen(DEFAULT_ART);
-	stringstream tmpSS;
-
-	tmpSS << menu_screen.rdbuf();
-	art = tmpSS.str();
-	menu_screen.close();
-
-	return art;
-}
-
-string FileSelection(string request)
-{
-	string answer;
-
-	cout << request;
-	cin >> answer;
-
-	// need to clear eventual input stream buffer
-	cin.clear();
-	cin.ignore(numeric_limits<streampos>::max(), '\n');
-
-	if (PositiveAnswer(answer))
-		answer = DEFAULT_FILE;
-
-	else
-	{
-		cout << "Insert your file path here: ";
-		getline(cin, answer);
+		ifstream splashscreen("Title_splashscreen.txt");
+		cout << splashscreen.rdbuf() << endl;
+		splashscreen.close();
+		PAUSEN; CLS;
+		ifstream menu_screen("menu_text.txt");
+		stringstream tmpSS;
+		tmpSS << menu_screen.rdbuf();
+		menu_art = tmpSS.str();
+		menu_screen.close();
 	}
 
-	return answer;
+	cout <<opt << endl;
+	setKey("NEW", "TEST", "naca", "./Options.ini");
+	PAUSEN; CLS;
+
+	Akimal game("akimal.txt");
+	string newGame;
+	do {
+		cout << menu_art << endl;
+		game.Game();
+		cout << "Do you want to keep playing? (Yes/No) ";
+		cin >> newGame;
+		LowerCase(newGame);
+		PAUSE; CLS;
+	} while (PositiveAnswer(newGame));
+	game.Save();
 }
