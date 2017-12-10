@@ -1,0 +1,2 @@
+Akimal::Load(string) @ File ../Akimal/bin/res/akimal.txt is empty! No data can be found.
+Akimal::Save(string) @ Cannot save data to ../Akimal/bin/res/akimal.txt: tree is empty.

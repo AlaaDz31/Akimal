@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef __BASICS__
+#define __BASICS__
+
 #include <algorithm>
 #include <cstdio>
 #include <conio.h>
@@ -10,31 +13,34 @@
 #include <stdexcept>
 
 #define STD						using namespace std
-STD;
 
 #define null					""
 #define in						:
-#define catch_exception(ex)		catch (const exception& ex)
-#define emptylist_exception		out_of_range ("List is empty!")
-#define keynotfound_exception	exception("Key was not found")
-#define outofrange_exception	out_of_range ("Index is out of range!")
-#define unexcepted_exception	exception ("An unexcepted exception has occurred!")
-#define local					(*this)
+#define catch_exception(ex)		catch (const std::exception& ex)
+#define emptylist_exception		std::out_of_range ("List is empty!")
+#define keynotfound_exception	std::exception("Key was not found")
+#define outofrange_exception	std::out_of_range ("Index is out of range!")
+#define unexcepted_exception	std::exception ("An unexcepted exception has occurred!")
 
 #define MAX_SIZE(t)				(pow (2, 8 * sizeof (t)) - 1)
 #define MIN_SIZE(t)				(-pow (2, 8 * sizeof (t)) + 1)
-#define CLS						system("cls")
-#define PAUSE					system("pause")
-#define ENPAUSE					printf_s("Press any key to continue. . ."); _getch()
-#define PAUSEN					system("pause>nul")
+#define CLS						std::system("cls")
+#define PAUSE					std::system("pause")
+#define _PAUSE(str)				printf_s(str); _getch()
+#define ENPAUSE					_PAUSE("Press any key to continue. . .")
+#define PAUSEN					std::system("pause>nul")
 #define END_MAIN				PAUSEN; return 0
-#define FLUSH_IN				fflush(stdin)
-#define FLUSH_OUT				fflush(stdout)
-#define ENDL					cout << endl
-#define endll					endl << endl
-#define ENDLL					cout << endll
+#define FLUSH_IN				std::fflush(stdin)
+#define FLUSH_OUT				std::fflush(stdout)
+#define ENDL					std::cout << std::endl
+#define endll					std::endl << std::endl
+#define ENDLL					std::cout << endll
 #define SET_TIME				srand(time(nullptr))
 #define typeof(v)				typeid(v).name()
+
+#ifndef local
+#define local					(*this)
+#endif /*local*/
 
 typedef unsigned short			ushort;
 typedef unsigned int			uint;
@@ -85,7 +91,7 @@ inline bool inRange(T value, T minV, T maxV)
 	return !outOfRange(value, minV, maxV);
 }
 
-inline bool isnum(const string& str)
+inline bool isnum(const std::string& str)
 {
 	for (uint i = 0; i < str.size(); i++)
 		if (!isdigit(str.at(i)))
@@ -94,24 +100,25 @@ inline bool isnum(const string& str)
 	return true;
 }
 
-inline void LowerCase(string& str)
+inline void LowerCase(std::string& str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
 }
 
-inline void UpperCase(string& str)
+inline void UpperCase(std::string& str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::toupper);
 }
 
-inline bool PositiveAnswer(string clause)
+inline bool PositiveAnswer(std::string clause)
 {
 	LowerCase(clause);
-	return (clause == "y" || clause == "yes");
+	return (clause == "y" || clause == "yes" || clause == "s" || clause == "si");
 }
 
-inline bool NegativeAnswer(string clause)
+inline bool NegativeAnswer(std::string clause)
 {
 	LowerCase(clause);
 	return (clause == "n" || clause == "no");
 }
+#endif // !__BASICS__
