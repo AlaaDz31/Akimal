@@ -17,8 +17,6 @@ WP = Wroking progress
  *	add possibility to play with a new or empty file
  *	WP - consider to log into kind of 'log.txt'
  *	WP - consider to add localization
- *	verify which is faster: [ getline() ] or [ cin>>, cin.clear(), cin.ignore(streamsize) ]
- *	maybe private only? Or only metadata-oriented?
 */
 
 class Akimal
@@ -34,6 +32,9 @@ private:
 	/// Aliases for the game
 	using str_node = TreeNode<string>;
 	using node_p = TreeNode<string>*;
+
+	/// Private use methods
+	void Initialize();					// Empty-tree Initialization
 
 	/// Recursive methods
 	void Dispose(node_p);				// Free memory space of sub-tree
@@ -114,6 +115,14 @@ inline void Akimal::Game()
 {
 	if (!Empty())
 		Game(root);
+}
+
+inline void Akimal::Initialize()
+{
+	root = new str_node("Vertebrate?");
+	root->left = new str_node("Condor");
+	root->right = new str_node("Opabinia");
+	size = 3;
 }
 
 inline void Akimal::Save()

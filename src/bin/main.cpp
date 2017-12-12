@@ -1,12 +1,17 @@
 #include <sstream>
 #include "../Game/Akimal.h"
 
+/*	LAST EDITS:
+	 • AddEntry() modified
+	 • Initialize() added
+*/
+
 STD;
 
-#define DEFAULT_ART_FILE		"../Akimal/bin/res/menu_text.txt"
-#define DEFAULT_DATA_FILE	"../Akimal/bin/res/akimal.txt"
-#define DEFAULT_LOG_FILE		"../Akimal/bin/res/log.txt"
-#define DEFAULT_SPLASH_FILE	"../Akimal/bin/res/Title_splashscreen.txt"
+#define DEFAULT_ART_FILE		"../Fort_Mazzer_Akimal/bin/res/menu_text.txt"
+#define DEFAULT_DATA_FILE		"../Fort_Mazzer_Akimal/bin/res/akimal.txt"
+#define DEFAULT_LOG_FILE		"../Fort_Mazzer_Akimal/bin/res/log.txt"
+#define DEFAULT_SPLASH_FILE		"../Fort_Mazzer_Akimal/bin/res/Title_splashscreen.txt"
 
 // Displays splash screen
 void ShowSplashScreen();
@@ -42,8 +47,9 @@ int main()
 		cout << "Do you want to keep playing? (Yes/No) ";
 		cin >> answer;
 
+		// clean extra data in buffer
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		_PAUSE("put here localized text"); CLS;
+		ENPAUSE; CLS;
 
 	} while (PositiveAnswer(answer));
 	game.Save();

@@ -77,6 +77,10 @@ void Akimal::AddEntry(node_p current)
 	std::cout<< "What is the difference between the two?: ";
 	getline(std::cin, question);
 
+	question.back() == '?' ?	// remove question mark (extra char)
+		question.pop_back()
+		: void();
+
 	current->key = question;
 	current->left = new str_node(animal);
 	current->right = new str_node(tmp);
