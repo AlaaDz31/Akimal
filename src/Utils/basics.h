@@ -15,7 +15,6 @@
 #define STD						using namespace std
 
 #define null					""
-#define in						:
 #define catch_exception(ex)		catch (const std::exception& ex)
 #define emptylist_exception		std::out_of_range ("List is empty!")
 #define keynotfound_exception	std::exception("Key was not found")
@@ -41,6 +40,8 @@
 #ifndef local
 #define local					(*this)
 #endif /*local*/
+
+#define ALL_COMMON_SPACES		" \t\n\r"	// represents all common spaces and similar chars
 
 typedef unsigned short			ushort;
 typedef unsigned int			uint;
@@ -100,25 +101,39 @@ inline bool isnum(const std::string& str)
 	return true;
 }
 
-inline void LowerCase(std::string& str)
+inline void toLowerCase(std::string& str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
 }
 
-inline void UpperCase(std::string& str)
+inline void toUpperCase(std::string& str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::toupper);
 }
 
+inline std::string LowerCase(std::string str)
+{
+	toLowerCase(str);
+	return str;
+}
+
+inline std::string UpperCase(std::string str)
+{
+	toUpperCase(str);
+	return str;
+}
+
+
 inline bool PositiveAnswer(std::string clause)
 {
-	LowerCase(clause);
+	toLowerCase(clause);
 	return (clause == "y" || clause == "yes" || clause == "s" || clause == "si");
 }
 
 inline bool NegativeAnswer(std::string clause)
 {
-	LowerCase(clause);
+	toLowerCase(clause);
 	return (clause == "n" || clause == "no");
 }
+
 #endif // !__BASICS__

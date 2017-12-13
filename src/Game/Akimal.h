@@ -1,10 +1,5 @@
 #pragma once
 
-/*
- *  This library and all other connected non-STL .h and .cpp files
- * are written following the standard ISO C++11 and later versions.
- */
-
 #include <fstream>
 #include "../Node/nodes.h"
 
@@ -16,7 +11,10 @@ WP = Wroking progress
  * TODO AND DISCUSSION
  *	add possibility to play with a new or empty file
  *	WP - consider to log into kind of 'log.txt'
- *	WP - consider to add localization
+ *  WP - Options file
+ *	avoid using PositiveAnswer and NegativeAnswer in the same check
+ *	consider using a file_utils.h
+ *	add possibility to ahve withe lines in the middle of akimal.txt file, not oly at beg and end
 */
 
 class Akimal
@@ -33,14 +31,12 @@ private:
 	using str_node = TreeNode<string>;
 	using node_p = TreeNode<string>*;
 
-	/// Private use methods
-	void Initialize();					// Empty-tree Initialization
-
 	/// Recursive methods
 	void Dispose(node_p);				// Free memory space of sub-tree
 	uint getAnswerNum(node_p) const;	// Retrieves number of answers in sub-tree
 	void Game(node_p);					// Recursive function for main game
 	void AddEntry(node_p);				// Add new Question-Answers group at node
+	void Initialize();					// Initialize to default non-empty tree
 
 	void Save(ofstream&, node_p);		// Saves sub-tree to specified std::ofstream
 	uint Load(ifstream&, node_p&);		// Loads sub-tree from specified istream. Returns number of lines read, corresponding to current size
@@ -111,18 +107,18 @@ inline uint Akimal::getQuestionNum() const
 	return Size() - getAnswerNum();
 }
 
+inline void Akimal::Initialize()
+{
+	root = new str_node("Vertebrate");
+	root->left = new str_node("Condor");
+	root->right = new str_node("Opabinia");
+	size = 3;
+}
+
 inline void Akimal::Game()
 {
 	if (!Empty())
 		Game(root);
-}
-
-inline void Akimal::Initialize()
-{
-	root = new str_node("Vertebrate?");
-	root->left = new str_node("Condor");
-	root->right = new str_node("Opabinia");
-	size = 3;
 }
 
 inline void Akimal::Save()
