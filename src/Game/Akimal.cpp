@@ -70,12 +70,15 @@ void Akimal::AddEntry(node_p current)
 {
 	string animal, question,
 		tmp = current->key;
-
-	std::cout<< "What animal did you meant?: ";
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+	std::cout<< "What animal did you mean?: ";
 	getline(std::cin, animal);
-
 	std::cout<< "What is the difference between the two?: ";
 	getline(std::cin, question);
+
+	question.back() == '?' ?
+		question.pop_back 
+		: void();
 
 	current->key = question;
 	current->left = new str_node(animal);
@@ -131,9 +134,12 @@ void Akimal::Load(string _path)
 	// prevent any reading error
 	else if (file.good())
 	{
+		char dummy = char();
 		// get number of lines during input process
-		string dummy;
-		getline(file, dummy);
+		while (dummy != QUESTION_ID)
+			file >> dummy;
+		file.unget();
+
 		int lines = Load(file, root);
 
 		// check if eof wasn't reached
