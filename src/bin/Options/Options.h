@@ -3,22 +3,28 @@
 
 struct GameOptions
 {
-	std::string path;
-	std::string splash_art;
-	std::string menu_art;
-	std::string log_file;
-	bool log_enabled;
+private:
+	using string = std::string;
 
-	GameOptions(std::string, std::string, bool);
-	GameOptions(std::string, std::string, std::string, std::string, bool);
+public:
+	string path;
+	string splash_art;
+	string menu_art;
+	string def_question;
+	string def_correct_ans;
+	string def_wrong_ans;
+
+	string log_file;
+	bool log_enabled = false;
+
+	GameOptions() = default;														// Default constructor; does not allow to play
+	GameOptions(string);															// Constructor with path - Logging is disabled
+	GameOptions(string, string, bool);												// Constructor with path - Can enable logging
+	GameOptions(string, string, string);											// Constructor with path and arts - Logging is disabled
+	GameOptions(string, string, string, string, bool);
+	GameOptions(string, string, string, string);
+	GameOptions(string, string, string, string, string, bool);
+	GameOptions(string, string, string, string, string, string);
+	GameOptions(string, string, string, string, string, string, string, bool);
 };
 
-GameOptions::GameOptions(std::string _path, std::string _log_file, bool _log_enabled)
-	: path(_path), log_file(_log_file), log_enabled(_log_enabled)
-{
-}
-
-GameOptions::GameOptions(std::string _path, std::string _splash_art, std::string _menu_art, std::string _log_file, bool _log_enabled)
-	: path(_path), splash_art(_splash_art), menu_art(_menu_art), log_file(_log_file), log_enabled(_log_enabled)
-{
-}

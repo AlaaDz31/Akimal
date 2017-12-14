@@ -3,6 +3,10 @@
 #include <fstream>
 #include "../Node/nodes.h"
 
+#define DEFAULT_QUESTION	"Vertebrate"
+#define DEFAULT_CORRECT_ANS	"Condor"
+#define DEFAULT_WRONG_ANS	"Opabinia"
+
 #define QUESTION_ID '?' // easy-to-change question identifier in file. Allows for quick remaking of file rules
 
 /*
@@ -61,10 +65,11 @@ public:
 	/// Game Methods
 	void Game();						// Main Game Method
 
-	void Save();						// Save to default path
-	void Save(string);					// Save to a specific path
+	/// File input/output
 	void Load(string);					// Load from a specific path
 	void Reload();						// Reload info from default path, if it's set
+	void Save();						// Save to default path
+	void Save(string);					// Save to a specific path
 
 	/// Operators
 	Akimal& operator= (const Akimal&) = delete;	// Disabled Copy Assignment Operator - C++11 compliant
@@ -73,11 +78,12 @@ public:
 	//Private Data Members Section
 private:
 
+	string path = null;		// Path of default file
 	node_p root = nullptr;	// Root of the tree
 	size_t size = 0;		// Size of the tree
-	string path = null;		// Path of default file
 };
 
+// Tree dispose function
 inline void Akimal::Clear()
 {
 	if (!Empty())
@@ -87,31 +93,36 @@ inline void Akimal::Clear()
 	size = 0;
 }
 
+// Returns true if tree is empty
 inline bool Akimal::Empty() const
 {
 	return root == nullptr;
 }
 
+// Returns number of nodes
 inline size_t Akimal::Size() const
 {
 	return size;
 }
 
+// Returns number of leafs
 inline uint Akimal::getAnswerNum() const
 {
 	return getAnswerNum(root);
 }
 
+// Returns number of non-leaf nodes
 inline uint Akimal::getQuestionNum() const
 {
 	return Size() - getAnswerNum();
 }
 
+// Initializes 
 inline void Akimal::Initialize()
 {
-	root = new str_node("Vertebrate");
-	root->left = new str_node("Condor");
-	root->right = new str_node("Opabinia");
+	root = new str_node(DEFAULT_QUESTION);
+	root->left = new str_node(DEFAULT_CORRECT_ANS);
+	root->right = new str_node(DEFAULT_WRONG_ANS);
 	size = 3;
 }
 
