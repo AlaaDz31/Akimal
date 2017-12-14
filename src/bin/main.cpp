@@ -64,6 +64,7 @@ int main()
 		res = (MenuOptions) Menu(game_menu, sizeof(game_menu) / sizeof(string));
 
 		CLS;
+		cout << menu_art << endll;
 		switch (res)
 		{
 		case MenuOptions::play:
@@ -121,7 +122,7 @@ string FileSelection(string request)
 	// need to clear garbage stream
 	cin.ignore((numeric_limits<streamsize>::max)(), '\n');
 
-	if (PositiveAnswer(answer))
+	if (PositiveAnswer(answer, false))
 		answer = DEFAULT_DATA_FILE;
 
 	else

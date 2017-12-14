@@ -124,15 +124,17 @@ inline std::string UpperCase(std::string str)
 }
 
 
-inline bool PositiveAnswer(std::string clause)
+inline bool PositiveAnswer(std::string clause, bool _case_sensitive = true)
 {
-	toLowerCase(clause);
+	if (!_case_sensitive) toLowerCase(clause);
+
 	return (clause == "y" || clause == "yes" || clause == "s" || clause == "si");
 }
 
-inline bool NegativeAnswer(std::string clause)
+inline bool NegativeAnswer(std::string clause, bool _case_sensitive = true)
 {
-	toLowerCase(clause);
+	if (!_case_sensitive) toLowerCase(clause);
+	
 	return (clause == "n" || clause == "no");
 }
 

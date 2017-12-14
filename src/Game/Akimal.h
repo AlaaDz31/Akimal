@@ -1,4 +1,4 @@
-#pragma once
+#pragma oncePositiveAnswer
 
 #include <fstream>
 #include "../Node/nodes.h"
