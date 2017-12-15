@@ -159,22 +159,22 @@ void Akimal::Load(string _path)
 	// prevent any reading error
 	if (file.good())
 	{
-		int whiteLines = 0;
+		int whiteLines = 1;
 		string spaces = ALL_COMMON_SPACES;
 
-		// remove all spaces before first "written" line
-		while (!file.eof() && file.peek() != QUESTION_ID)
+		// remove all spaces before first '?'-char-beginning line
+		while (!file.eof() && file.peek() != QUESTION_ID && whiteLines++)
 			if (spaces.find(file.get()) != string::npos)
 			{
-				std::clog << "Akimal::Load(string) @ Format error in file " << _path << "." << std::endl;
-				return;
+				std::clog << "Akimal::Load(string) @ Format error in file " << _path << " at line " << whiteLines << "." << std::endl;
+				goto End;
 			}
 		file.unget();
 
 		// check if eof has been reached
 		if (file.eof())//((int) file.tellg() != ifstream::traits_type::eof())
 		{
-			std::clog << "Akimal::Load(string) @ It was impossible to read the entire file at " << _path << "." << std::endl;
+			std::clog << "Akimal::Load(string) @ File " << _path << " is empty." << std::endl;
 			Clear();
 		}
 
@@ -205,6 +205,7 @@ void Akimal::Load(string _path)
 	else
 		std::clog << "Akimal::Load(string) @ File " << _path << " cannot be loaded." << std::endl;
 
+End:
 	file.close();
 }
 
@@ -217,7 +218,7 @@ uint Akimal::Load(ifstream& _file, node_p& n)
 
 	string line;
 
-	if (getline(_file, line))	// input successful
+	if (getline(_file, line) && !EmptyLine(line))	// input successful -- line is not empty
 	{
 		// check if line begins with '?' --> it is a characteristic / question
 		if (line.at(0) == QUESTION_ID)

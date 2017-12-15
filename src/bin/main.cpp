@@ -7,16 +7,16 @@
 STD;
 
 // Default file paths:
-#define DEFAULT_ART_FILE		"..\Akimal\bin\res\menu_text.txt"
-#define DEFAULT_DATA_FILE		"..\Akimal\bin\res\akimal.txt"
-#define DEFAULT_LOG_FILE		"..\Akimal\bin\res\log.txt"
-#define DEFAULT_SPLASH_FILE		"..\Akimal\bin\res\splash.txt"
-#define DEFAULT_OPTIONS_FILE	"..\Akimal\bin\res\Options.ini"
+#define DEFAULT_ART_FILE		"../Akimal/bin/res/menu_text.txt"
+#define DEFAULT_DATA_FILE		"../Akimal/bin/res/akimal.txt"
+#define DEFAULT_LOG_FILE		"../Akimal/bin/res/log.txt"
+#define DEFAULT_SPLASH_FILE		"../Akimal/bin/res/splash.txt"
+#define DEFAULT_OPTIONS_FILE	"../Akimal/bin/res/Options.ini"
 
 // Enumeration with options provided by the menu
 enum class MenuOptions
 {
-	play,
+	play = 1,
 	options,
 	exit
 };
@@ -141,6 +141,9 @@ GameOptions loadOptions(string ini)
 		getKey("Options", "path", ini),
 		getKey("Options", "splash", ini),
 		getKey("Options", "menu", ini),
+		getKey("DefaultTree", "question", ini),
+		getKey("DefaultTree", "correct", ini),
+		getKey("DefaultTree", "wrong", ini),
 		getKey("Options", "log_file", ini),
 		(getKey("Options", "log_enabled", ini) == "1") ? true : false
 	};
@@ -151,6 +154,9 @@ void saveOptions(GameOptions options, string ini)
 	setKey("Options", "path", options.path, ini);
 	setKey("Options", "splash", options.splash_art, ini);
 	setKey("Options", "menu", options.menu_art, ini);
+	setKey("DefaultTree", "question", options.def_question, ini);
+	setKey("DefaultTree", "correct", options.def_correct_ans, ini);
+	setKey("DefaultTree", "wrong", options.def_wrong_ans, ini);
 	setKey("Options", "log_file", options.log_file, ini);
 	setKey("Options", "log_enabled", options.log_enabled ? "1" : "0", ini);
 }

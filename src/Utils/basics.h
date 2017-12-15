@@ -111,31 +111,35 @@ inline void toUpperCase(std::string& str)
 	transform(str.begin(), str.end(), str.begin(), ::toupper);
 }
 
-inline std::string LowerCase(std::string str)
+inline std::string LowerCaseOf(std::string str)
 {
 	toLowerCase(str);
 	return str;
 }
 
-inline std::string UpperCase(std::string str)
+inline std::string UpperCaseOf(std::string str)
 {
 	toUpperCase(str);
 	return str;
 }
 
-
-inline bool PositiveAnswer(std::string clause, bool _case_sensitive = true)
+inline bool PositiveAnswer(std::string _clause, bool _case_sensitive = true)
 {
-	if (!_case_sensitive) toLowerCase(clause);
+	if (!_case_sensitive) toLowerCase(_clause);
 
-	return (clause == "y" || clause == "yes" || clause == "s" || clause == "si");
+	return (_clause == "y" || _clause == "yes" || _clause == "s" || _clause == "si");
 }
 
-inline bool NegativeAnswer(std::string clause, bool _case_sensitive = true)
+inline bool NegativeAnswer(std::string _clause, bool _case_sensitive = true)
 {
-	if (!_case_sensitive) toLowerCase(clause);
+	if (!_case_sensitive) toLowerCase(_clause);
 	
-	return (clause == "n" || clause == "no");
+	return (_clause == "n" || _clause == "no");
+}
+
+inline bool EmptyLine(std::string _line)
+{
+	return (_line.find_first_not_of(ALL_COMMON_SPACES) == std::string::npos);
 }
 
 #endif // !__BASICS__
