@@ -10,6 +10,7 @@
 #include <iostream>
 #include <limits>
 #include <string>
+#include <fstream>
 #include <stdexcept>
 
 #define STD						using namespace std
@@ -31,11 +32,11 @@
 #define END_MAIN				PAUSEN; return 0
 #define FLUSH_IN				std::fflush(stdin)
 #define FLUSH_OUT				std::fflush(stdout)
-#define ENDL					std::cout << std::endl
+#define FLUSH_ERR				std::fflush(stderr)
 #define endll					std::endl << std::endl
+#define ENDL					std::cout << std::endl
 #define ENDLL					std::cout << endll
-#define SET_TIME				srand(time(nullptr))
-#define typeof(v)				typeid(v).name()
+#define SET_TIME				srand(time(NULL))
 
 #ifndef local
 #define local					(*this)
@@ -48,6 +49,36 @@ typedef unsigned int			uint;
 typedef unsigned long			ulong;
 typedef unsigned long long		ullong;
 typedef unsigned char			uchar;
+
+//// 24 bits unsigned-integer-type variable
+//struct uint24_t
+//{
+//	uint24_t() : integer(0) {}
+//	uint24_t(int i) : integer(i) {}
+//
+//	uint24_t operator>>(int _right)
+//	{
+//		return integer >> _right;
+//	}
+//
+//	uint24_t operator<<(int _right)
+//	{
+//		return integer << _right;
+//	}
+//
+//	uint24_t operator>>=(int _right)
+//	{
+//		return integer >>= _right;
+//	}
+//
+//	uint24_t operator<<=(int _right)
+//	{
+//		return integer <<= _right;
+//	}
+//
+//private:
+//	uint integer : 24;
+//};
 
 // returns the mcm between 2 numbers
 template<class T>
@@ -101,6 +132,11 @@ inline bool isnum(const std::string& str)
 	return true;
 }
 
+inline bool EmptyLine(std::string _line)
+{
+	return (_line.find_first_not_of(ALL_COMMON_SPACES) == std::string::npos);
+}
+
 inline void toLowerCase(std::string& str)
 {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
@@ -127,19 +163,28 @@ inline bool PositiveAnswer(std::string _clause, bool _case_sensitive = true)
 {
 	if (!_case_sensitive) toLowerCase(_clause);
 
-	return (_clause == "y" || _clause == "yes" || _clause == "s" || _clause == "si");
+	return (_clause == "y" || _clause == "yes");
 }
 
 inline bool NegativeAnswer(std::string _clause, bool _case_sensitive = true)
 {
 	if (!_case_sensitive) toLowerCase(_clause);
-	
+
 	return (_clause == "n" || _clause == "no");
 }
 
-inline bool EmptyLine(std::string _line)
+inline bool QuitAnswer(std::string _clause, bool _case_sensitive = true)
 {
-	return (_line.find_first_not_of(ALL_COMMON_SPACES) == std::string::npos);
+	if (!_case_sensitive)
+		toLowerCase(_clause);
+
+	return (_clause == "q" || _clause == "quit");
+}
+
+inline bool FileExists(std::string _path)
+{
+	std::ifstream i(_path);
+	return i.good();
 }
 
 #endif // !__BASICS__

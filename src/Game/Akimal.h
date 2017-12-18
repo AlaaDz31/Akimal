@@ -1,4 +1,4 @@
-#pragma oncePositiveAnswer
+#pragma once
 
 #include <fstream>
 #include "../Node/nodes.h"
@@ -7,18 +7,19 @@
 #define DEFAULT_CORRECT_ANS	"Condor"
 #define DEFAULT_WRONG_ANS	"Opabinia"
 
-#define QUESTION_ID '?' // easy-to-change question identifier in file. Allows for quick remaking of file rules
+#define QUESTION_ID	'?' // easy-to-change question identifier in file. Allows for quick remaking of file rules
 
 /*
-WP = Wroking progress
+WP = Working progress
 
- * TODO AND DISCUSSION
- *	add possibility to play with a new or empty file
- *	WP - consider to log into kind of 'log.txt'
- *  WP - Options file
- *	avoid using PositiveAnswer and NegativeAnswer in the same check
- *	consider using a file_utils.h
- *	add possibility to ahve withe lines in the middle of akimal.txt file, not oly at beg and end
+* TODO AND DISCUSSION
+*	
+*	IMPORTANT: MAKE LOADING WORK
+*
+*	WP - add possibility to play with a new or empty file
+*	WP - consider to log into kind of 'log.txt'
+*   WP - Options file
+*	WP - add possibility to have withe lines in the middle of akimal.txt file, not only at beg and end
 */
 
 class Akimal
@@ -43,9 +44,9 @@ private:
 	void Initialize();					// Initialize to default non-empty tree
 
 	void Save(ofstream&, node_p);		// Saves sub-tree to specified std::ofstream
-	uint Load(ifstream&, node_p&);		// Loads sub-tree from specified istream. Returns number of lines read, corresponding to current size
+	uint Load(ifstream&, node_p&);		// Loads sub-tree from specified istream. Returns number of assigned nodes, corresponding to current size
 
-	//Public Methods Section
+										//Public Methods Section
 public:
 
 	/// Constructors and memory management
@@ -55,27 +56,27 @@ public:
 	Akimal(string);						// Constructor passing file path
 	~Akimal();							// Destructor
 
-	/// Content Data Management
+										/// Content Data Management
 	bool Empty() const;					// Whether the game tree is empty
 	void Clear();						// Clears the tree to default state
 	size_t Size() const;				// Get Total Number of Nodes
 	uint getAnswerNum() const;			// Get Number of Answers (Leaves)
 	uint getQuestionNum() const;		// Get Number of Questions (Non-Leaves)
 
-	/// Game Methods
+										/// Game Methods
 	void Game();						// Main Game Method
 
-	/// File input/output
+										/// File input/output
 	void Load(string);					// Load from a specific path
 	void Reload();						// Reload info from default path, if it's set
 	void Save();						// Save to default path
 	void Save(string);					// Save to a specific path
 
-	/// Operators
+										/// Operators
 	Akimal& operator= (const Akimal&) = delete;	// Disabled Copy Assignment Operator - C++11 compliant
 	Akimal& operator= (Akimal&&) = default;		// Defaulted Move Assignment Operator - C++11 compliant
 
-	//Private Data Members Section
+												//Private Data Members Section
 private:
 
 	string path = null;		// Path of default file
@@ -117,7 +118,7 @@ inline uint Akimal::getQuestionNum() const
 	return Size() - getAnswerNum();
 }
 
-// Initializes 
+// Initializes the tree
 inline void Akimal::Initialize()
 {
 	root = new str_node(DEFAULT_QUESTION);
@@ -126,17 +127,20 @@ inline void Akimal::Initialize()
 	size = 3;
 }
 
+// Begins the game
 inline void Akimal::Game()
 {
 	if (!Empty())
 		Game(root);
 }
 
+// Saves the tree
 inline void Akimal::Save()
 {
 	Save(path);
 }
 
+// Reaload the tree from the same file
 inline void Akimal::Reload()
 {
 	Load(path);

@@ -1,2 +1,11 @@
-Akimal::Load(string) @ Format error in file ../Akimal/bin/res/akimal.txt.
+
+
+
+
+
+
+
+
+
+
 Akimal::Save(string) @ Cannot save data to ../Akimal/bin/res/akimal.txt: tree is empty.
