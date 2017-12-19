@@ -37,10 +37,7 @@
 #define ENDL					std::cout << std::endl
 #define ENDLL					std::cout << endll
 #define SET_TIME				srand(time(NULL))
-
-#ifndef local
 #define local					(*this)
-#endif /*local*/
 
 #define ALL_COMMON_SPACES		" \t\n\r"	// represents all common spaces and similar chars
 

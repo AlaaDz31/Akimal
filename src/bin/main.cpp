@@ -39,6 +39,9 @@ enum class OptionsMenu
 	exit
 };
 
+// instance to play the game
+Akimal game;
+
 // Menu of strings
 string game_menu[] = { "Play", "Options", "Exit" };
 
@@ -77,9 +80,10 @@ int main()
 	local_options = loadOptions(DEFAULT_OPTIONS_FILE);
 	correctLoadingFailures();
 
-	string	answer;		// holder for all answers
-	Akimal game;		// instance to play the game
+	string	answer;						// holder for all answers
 	MainMenu res;
+
+	game.Load (local_options.path);
 
 	ShowSplashScreen();
 	cin.ignore(); CLS;
@@ -104,7 +108,6 @@ int main()
 			PlaySound(NULL, NULL, NULL);
 
 		// game obj configuration
-		game.Load(local_options.path);
 		game.setDefaultInitializationKeys(local_options.def_question, local_options.def_correct_ans, local_options.def_wrong_ans);
 
 		cout << menu_art << endl;
@@ -124,6 +127,7 @@ int main()
 
 		case MainMenu::exit:
 			saveOptions(local_options, DEFAULT_OPTIONS_FILE);
+			cerr << local_options.path;
 			game.Save(local_options.path);
 			log.close();
 			break;
@@ -250,9 +254,11 @@ void ShowOptionsMenu(GameOptions& options)
 			getline(cin, answer);
 			if (!QuitAnswer(answer, false))
 			{
-				if (FileChanger(options.path, answer))
+				if (FileChanger (options.path, answer))
+				{
 					cout << "\nEdit success." << endl;
-
+					game.Load (options.path);
+				}
 				else
 					cout << "\nValue unchanged." << endl;
 

@@ -4,7 +4,7 @@
 
 #define DEFAULT_QUESTION	"Vertebrate"
 #define DEFAULT_CORRECT_ANS	"Condor"
-#define DEFAULT_WRONG_ANS	"Opabinia"
+#define DEFAULT_WRONG_ANS	"JellyFish"
 
 #define QUESTION_ID			'?'							// easy-to-change question identifier in file. Allows for quick remaking of file rules
 
@@ -33,8 +33,8 @@ private:
 	/// Recursive methods
 	void Dispose(node_p);				// Free memory space of sub-tree
 	uint getAnswerNum(node_p) const;	// Retrieves number of answers in sub-tree
-	void Game(node_p);					// Recursive function for main game
-	void AddEntry(node_p);				// Add new Question-Answers group at node
+	void Game(node_p&);					// Recursive function for main game
+	void AddEntry(node_p&);				// Add new Question-Answers group at node
 	void Initialize();					// Initialize to default non-empty tree
 
 	void Save(ofstream&, node_p);		// Saves sub-tree to specified std::ofstream
@@ -50,7 +50,7 @@ public:
 	Akimal(string);						// Constructor passing file path
 	~Akimal();							// Destructor
 
-										/// Content Data Management
+	/// Content Data Management
 	bool Empty() const;					// Whether the game tree is empty
 	void Clear();						// Clears the tree to default state
 	size_t Size() const;				// Get Total Number of Nodes
@@ -59,16 +59,16 @@ public:
 
 	void setDefaultInitializationKeys(string, string, string);	// Set default question, correct and wrong answer
 
-										/// Game Methods
+	/// Game Methods
 	void Game();						// Main Game Method
 
-										/// File input/output
+	/// File input/output
 	void Load(string);					// Load from a specific path
 	void Reload();						// Reload info from default path, if it's set
 	void Save();						// Save to default path
 	void Save(string);					// Save to a specific path
 
-										/// Operators
+	/// Operators
 	Akimal& operator= (const Akimal&) = delete;	// Disabled Copy Assignment Operator - C++11 compliant
 	Akimal& operator= (Akimal&&) = default;		// Defaulted Move Assignment Operator - C++11 compliant
 
