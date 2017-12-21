@@ -1,0 +1,16 @@
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.
+Akimal::Save(string) @ Cannot save data to ../Akimal/bin/res/akimal.txt: tree is empty.
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.
+Akimal::Save(string) @ Cannot save data to ../Akimal/bin/res/akimal.txt: tree is empty.
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.
+
+Akimal::Load(string) @ Error -- Cannot read file ../Akimal/bin/res/akimal.txt.

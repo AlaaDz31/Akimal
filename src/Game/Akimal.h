@@ -33,8 +33,8 @@ private:
 	/// Recursive methods
 	void Dispose(node_p);				// Free memory space of sub-tree
 	uint getAnswerNum(node_p) const;	// Retrieves number of answers in sub-tree
-	void Game(node_p&);					// Recursive function for main game
-	void AddEntry(node_p&);				// Add new Question-Answers group at node
+	void Game(node_p);					// Recursive function for main game
+	void AddEntry(node_p);				// Add new Question-Answers group at node
 	void Initialize();					// Initialize to default non-empty tree
 
 	void Save(ofstream&, node_p);		// Saves sub-tree to specified std::ofstream

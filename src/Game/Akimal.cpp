@@ -37,7 +37,7 @@ uint Akimal::getAnswerNum(node_p n) const
 }
 
 // Guesser
-void Akimal::Game(node_p& _current)
+void Akimal::Game(node_p _current)
 {
 	string input;
 
@@ -71,6 +71,8 @@ void Akimal::Game(node_p& _current)
 			std::cin >> input;
 			toLowerCase(input);
 
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
 			if (PositiveAnswer(input))
 				std::cout << "I won :-)" << std::endl;
 
@@ -82,18 +84,18 @@ void Akimal::Game(node_p& _current)
 
 			else
 				std::cout << "Not valid. Answer either 'yes' or 'no': ";
-			
+
 		} while (!PositiveAnswer(input) && !NegativeAnswer(input));
 	}
 }
 
 // Adds a new animal to the tree
-void Akimal::AddEntry(node_p& _current)
+void Akimal::AddEntry(node_p _current)
 {
 	string answer,
 		tmp = _current->key;
 
-	std::cin.ignore (std::numeric_limits<std::streamsize>::max (), '\n');
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 
 	std::cout << "What animal did you mean?: ";
 	getline(std::cin, answer);
@@ -135,7 +137,7 @@ void Akimal::Save(string _path)
 // Saves a subtree to a file
 void Akimal::Save(ofstream& _file, node_p n)
 {
-	if (n->isParent())			// a question
+	if (n->isParent())		// a question
 	{
 		_file << QUESTION_ID << n->key << '\n';
 		Save(_file, n->left);

@@ -127,7 +127,6 @@ int main()
 
 		case MainMenu::exit:
 			saveOptions(local_options, DEFAULT_OPTIONS_FILE);
-			cerr << local_options.path;
 			game.Save(local_options.path);
 			log.close();
 			break;
