@@ -45,7 +45,7 @@ public:
 
 	/// Constructors and memory management
 	Akimal() = default;					// C++11 compliant
-	Akimal(const Akimal&) = delete;		// Disabled Copy Constructor (only single istance of specified game) - C++11 compliant 
+	Akimal(const Akimal&) = delete;		// Disabled Copy Constructor (only single istance of given game) - C++11 compliant 
 	Akimal(Akimal&&) = default;			// Defaulted Move Constructor - C++11 compliant
 	Akimal(string);						// Constructor passing file path
 	~Akimal();							// Destructor
